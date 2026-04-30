@@ -1131,10 +1131,10 @@
 
   function resolveTemplates(s) {
     if (!s) return '';
-    return s.replace(/\{\{hidden:([a-z_]+)\}\}/gi, (_, key) => {
-      // Resolve the ones the original Typeform was passing forward via redirect URL
+    let out = s;
+    // {{hidden:NAME}} — values originally passed between forms via redirect URL
+    out = out.replace(/\{\{hidden:([a-z_]+)\}\}/gi, (_, key) => {
       if (key === 'name') {
-        // Find the first_name subfield by subfield_key (now nested in a page)
         for (const e of schema.order) {
           if (e.kind === 'page') {
             for (const sf of (e.subfields || [])) {
@@ -1160,6 +1160,22 @@
       }
       return '';
     });
+    // {{field:UUID}} — Typeform "piping": insert the user's answer to a previous field
+    out = out.replace(/\{\{field:([a-f0-9-]+)\}\}/gi, (_, ref) => {
+      const v = answers[ref];
+      if (v === undefined || v === null || v === '') return '…';
+      if (v === true) return 'Yes';
+      if (v === false) return 'No';
+      if (Array.isArray(v)) {
+        return v.map(x => (schema.choice_index[x] && schema.choice_index[x].label) || x).join(', ');
+      }
+      // String values may be choice refs that need looking up to get the readable label
+      if (typeof v === 'string' && schema.choice_index[v]) {
+        return schema.choice_index[v].label;
+      }
+      return String(v);
+    });
+    return out;
   }
 
   function escapeHtml(s) {
