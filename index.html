@@ -839,7 +839,7 @@
                 </button>`;
       }).join('');
       const hint = multi
-        ? '<div class="helper">Select all that apply. Press Enter or click Continue when finished.</div>'
+        ? '<div class="helper">Select all that apply, then click Continue. Choosing "None of the above" will progress automatically.</div>'
         : '';
       inputHtml = `<div class="choices" id="choiceGroup" data-multi="${multi}">${buttons}</div>${hint}`;
     } else if (ftype === 'dropdown') {
@@ -904,9 +904,27 @@
           let val = raw === 'true' ? true : raw === 'false' ? false : raw;
           if (multi) {
             if (!Array.isArray(pendingValue)) pendingValue = [];
+            const clickedIsNone = isNoneOfAboveRef(entry, val);
+
+            if (clickedIsNone) {
+              // Selecting "None" replaces the entire selection and auto-advances
+              pendingValue = [val];
+              cg.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
+              btn.classList.add('selected');
+              setTimeout(next, 180);
+              return;
+            }
+
+            // Selecting any other option clears any existing "None" selection
+            pendingValue = pendingValue.filter(v => !isNoneOfAboveRef(entry, v));
+            cg.querySelectorAll('.choice').forEach(b => {
+              if (isNoneOfAboveRef(entry, b.dataset.val)) b.classList.remove('selected');
+            });
+
+            // Toggle the clicked option
             const idx = pendingValue.indexOf(val);
-            if (idx === -1) pendingValue.push(val); else pendingValue.splice(idx, 1);
-            btn.classList.toggle('selected');
+            if (idx === -1) { pendingValue.push(val); btn.classList.add('selected'); }
+            else { pendingValue.splice(idx, 1); btn.classList.remove('selected'); }
           } else {
             cg.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
@@ -1112,6 +1130,22 @@
     const k = (entry.subfield_key || '').toLowerCase();
     const map = { first_name: 'given-name', last_name: 'family-name', email: 'email', phone_number: 'tel' };
     return map[k] || 'on';
+  }
+
+  // "None of the above" / "None of these" / "None" — selecting one of these is mutually
+  // exclusive with selecting any other option, and should auto-advance the form. Detection
+  // is by label match (case-insensitive) since Typeform doesn't tag them specially.
+  // Matches: "None", "None of the above", "None of these", "None of these/Don't know",
+  // "None of the listed groups", etc. Does NOT match labels like "None - fly as a passenger
+  // only" where "None" is part of a substantive answer.
+  const NONE_LABEL_RE = /^\s*none\s*($| of\b)/i;
+  function isNoneOfAboveChoice(choice) {
+    return NONE_LABEL_RE.test(choice.label || '');
+  }
+  function isNoneOfAboveRef(entry, ref) {
+    if (!entry || !entry.choices) return false;
+    const c = entry.choices.find(x => x.ref === ref);
+    return c ? isNoneOfAboveChoice(c) : false;
   }
 
   // Inline format: convert *foo* → italics, [text](url) → links, **foo** → bold (rare)

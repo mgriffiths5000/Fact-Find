@@ -20241,7 +20241,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
