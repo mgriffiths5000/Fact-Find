@@ -1,6 +1,4 @@
-// Edit this file after deploying your Apps Script.
-// Put the deployment URL here, then deploy the form.
-//
-// Example:
-//   window.SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxx/exec';
-window.SUBMIT_URL = '';
+// Put your email address here. The first submission will send you a
+// one-time activation email from Formsubmit — click the link in it,
+// and all future submissions will arrive in your inbox automatically.
+window.NOTIFY_EMAIL = 'you@example.com';

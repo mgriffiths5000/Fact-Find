@@ -544,7 +544,7 @@
 
   // -------------------- Config --------------------
   const STORAGE_KEY = 'bhh_factfind_v1';
-  const SUBMIT_URL = (window.SUBMIT_URL || new URLSearchParams(location.search).get('submit_url') || '').trim();
+  const NOTIFY_EMAIL = (window.NOTIFY_EMAIL || '').trim();
 
   // -------------------- State --------------------
   let schema = null;
@@ -1679,40 +1679,53 @@
     if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
     errEl.classList.remove('show');
 
-    const payload = {
-      schema_version: schema.meta.version,
-      submitted_at: new Date().toISOString(),
-      user_agent: navigator.userAgent,
-      // Both raw answers AND a "rendered" view that's easier for downstream consumers
-      answers: answers,
-      rendered: renderForOutput(),
-    };
+    // Build a readable plain-text summary for the email body
+    const groups = buildReviewGroups();
+    const clientName = extractField('first_name') + ' ' + extractField('last_name');
+    const clientEmail = extractField('email');
 
-    if (!SUBMIT_URL) {
-      // No backend wired yet — show payload so the user can copy it
+    const bodyLines = [];
+    for (const g of groups) {
+      bodyLines.push('');
+      bodyLines.push('=== ' + g.title.toUpperCase() + ' ===');
+      for (const r of g.rows) {
+        const answerText = typeof r.a === 'object'
+          ? JSON.stringify(r.a)
+          : renderAnswerText(r.a);
+        bodyLines.push(r.q + ': ' + answerText);
+      }
+    }
+    const summary = bodyLines.join('\n').trim();
+
+    if (!NOTIFY_EMAIL || NOTIFY_EMAIL === 'you@example.com') {
+      // No email configured — show preview
       stage().innerHTML = `
         <div class="card">
           <span class="eyebrow"><span class="dot"></span>Preview mode</span>
           <h1 class="q-title">Submission ready</h1>
-          <p class="q-desc">No <code>SUBMIT_URL</code> is configured, so nothing was sent. Below is the JSON your backend will receive.</p>
-          <pre style="background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:16px;overflow:auto;max-height:60vh;font-size:13px">${escapeHtml(JSON.stringify(payload, null, 2))}</pre>
+          <p class="q-desc">No email address is set in <code>config.js</code>. Below is the summary that would be emailed.</p>
+          <pre style="background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:16px;overflow:auto;max-height:60vh;font-size:13px;white-space:pre-wrap">${escapeHtml(summary)}</pre>
         </div>`;
       return;
     }
 
     try {
-      const r = await fetch(SUBMIT_URL, {
+      const r = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(NOTIFY_EMAIL)}`, {
         method: 'POST',
-        // text/plain avoids CORS preflight (Apps Script web apps don't handle OPTIONS).
-        // The Apps Script handler reads e.postData.contents and JSON.parses it.
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload),
-        redirect: 'follow',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'New fact find — ' + clientName.trim(),
+          name: clientName.trim() || 'Client',
+          email: clientEmail || NOTIFY_EMAIL,
+          message: summary,
+          _template: 'table',
+          _captcha: 'false',
+        }),
       });
-      if (!r.ok) throw new Error('Submit failed (' + r.status + ')');
-      let result = null;
-      try { result = await r.json(); } catch (_) {}
-      if (result && result.ok === false) throw new Error(result.error || 'Submit refused');
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok || data.success === 'false' || data.success === false) {
+        throw new Error(data.message || 'Submit failed (' + r.status + ')');
+      }
       clearState();
       stage().innerHTML = `
         <div class="center">
@@ -1726,6 +1739,18 @@
     }
   }
 
+  function extractField(key) {
+    for (const e of schema.order) {
+      if (e.kind === 'page') {
+        for (const sf of (e.subfields || [])) {
+          if (sf.subfield_key === key && answers[sf.ref]) return String(answers[sf.ref]);
+        }
+      } else if (e.kind === 'field' && e.subfield_key === key && answers[e.ref]) {
+        return String(answers[e.ref]);
+      }
+    }
+    return '';
+  }
   function renderForOutput() {
     const groups = buildReviewGroups();
     return groups.map(g => ({
