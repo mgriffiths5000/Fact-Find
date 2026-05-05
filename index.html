@@ -123,6 +123,17 @@
   .eyebrow .dot {
     width: 5px; height: 5px; border-radius: 99px; background: var(--accent);
   }
+  .eyebrow .prefix-tag {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border: 1px solid #cfdcd2;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    text-transform: none;
+  }
 
   h1.q-title {
     font-family: var(--serif);
@@ -451,6 +462,24 @@
   .review-q { color: var(--ink-soft); }
   .review-a { color: var(--ink); white-space: pre-wrap; word-break: break-word; }
   @media (max-width: 600px) { .review-row { grid-template-columns: 1fr; gap: 4px; } }
+
+  /* Choice list in review */
+  .review-choices { display: flex; flex-direction: column; gap: 5px; }
+  .review-choice {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--ink-mute);
+  }
+  .review-choice.chosen { color: var(--ink); font-weight: 500; }
+  .review-choice-marker {
+    width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
+    border: 1.5px solid var(--line-strong);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .review-choice.chosen .review-choice-marker {
+    background: var(--accent); border-color: var(--accent);
+  }
+  .review-choice-marker svg { display: none; }
+  .review-choice.chosen .review-choice-marker svg { display: block; }
 
   /* End / loading */
   .center {
@@ -798,10 +827,10 @@
   }
 
   function renderSection(entry) {
-    const eyebrow = `Section · Part ${entry.part}`;
+    const eyebrowLabel = `Section · Part ${entry.part}`;
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>${escapeHtml(eyebrow)}</span>
+        ${eyebrow(entry, eyebrowLabel)}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         ${entry.description ? `<div class="info-card">${formatTitle(entry.description)}</div>` : ''}
         ${navActions(false, 'Continue')}
@@ -812,7 +841,7 @@
   function renderDisplay(entry) {
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Note · Part ${entry.part}</span>
+        ${eyebrow(entry, 'Note · Part ' + entry.part)}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         ${navActions(false, 'Continue')}
@@ -828,7 +857,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        ${eyebrow(entry, 'Part ' + entry.part)}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="subfields">${subfieldHtml}</div>
@@ -933,7 +962,7 @@
     const storedLabel = stored && schema.choice_index[stored] ? schema.choice_index[stored].label : stored;
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        ${eyebrow(entry, 'Part ' + entry.part)}
         <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field occ-search-wrap">
@@ -1029,7 +1058,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        ${eyebrow(entry, 'Part ' + entry.part)}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         <p class="q-desc">Select all that apply.</p>
         <div class="sick-options">${optHtml}</div>
@@ -1066,7 +1095,6 @@
     const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
     const TYPES = [
       { key: 'admin',   label: 'Administrative',  desc: 'Office, computer, phone work' },
-      { key: 'super',   label: 'Supervisory',      desc: 'Managing or overseeing others' },
       { key: 'light',   label: 'Light manual',     desc: 'Moving or lifting under 10 kg regularly', detail: true },
       { key: 'heavy',   label: 'Heavy manual',     desc: 'Machinery or lifting over 10 kg regularly', detail: true },
     ];
@@ -1091,7 +1119,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        ${eyebrow(entry, 'Part ' + entry.part)}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         <p class="q-desc">Enter the approximate percentage for each category. The total must add up to 100%.</p>
         <div class="work-type-grid">${rowsHtml}</div>
@@ -1143,7 +1171,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        ${eyebrow(entry, 'Part ' + entry.part)}
         <h1 class="q-title">Mortgage Details</h1>
         <p class="q-desc">Fill in as many details as you can.</p>
         <div class="mortgage-grid">
@@ -1280,7 +1308,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        ${eyebrow(entry, 'Part ' + entry.part)}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         <p class="q-desc">Add everyone who relies on your income — children, a partner, or anyone else financially dependent on you.</p>
         <div class="dependents-list" id="depList"></div>
@@ -1363,7 +1391,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        ${eyebrow(entry, 'Part ' + entry.part)}
         <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field">${inputHtml}</div>
@@ -1477,7 +1505,7 @@
           : g.rows.map(r => `
               <div class="review-row">
                 <div class="review-q">${formatTitle(r.q)}</div>
-                <div class="review-a">${formatAnswer(r.a)}</div>
+                <div class="review-a">${renderReviewAnswer(r)}</div>
               </div>`).join('')}
       </div>`).join('');
 
@@ -1534,7 +1562,7 @@
           groups.push(current);
           lastPart = entry.part;
         }
-        current.rows.push({ q: stripFormatting(entry.title), a: answers[entry.ref], ref: entry.ref, type: entry.type });
+        current.rows.push({ q: stripFormatting(entry.title), a: answers[entry.ref], ref: entry.ref, type: entry.type, choices: entry.choices || [] });
       }
     }
     return groups.filter(g => g.rows.length > 0);
@@ -1555,8 +1583,7 @@
       }
     } else if (entry.custom_type === 'work_type') {
       const TYPES = [
-        {key:'admin',label:'Administrative'},{key:'super',label:'Supervisory'},
-        {key:'light',label:'Light manual'},{key:'heavy',label:'Heavy manual'},
+        {key:'admin',label:'Administrative'},{key:'light',label:'Light manual'},{key:'heavy',label:'Heavy manual'},
       ];
       TYPES.forEach(t => {
         if (val[t.key+'_pct'] && Number(val[t.key+'_pct']) > 0) {
@@ -1585,6 +1612,42 @@
       }
     }
     return rows;
+  }
+
+  const CHECK_SVG = `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  function renderReviewAnswer(r) {
+    const { a, type, choices } = r;
+
+    // Yes/No — always show both options
+    if (type === 'yes_no') {
+      return `<div class="review-choices">
+        ${['Yes','No'].map(opt => {
+          const chosen = (opt === 'Yes' && a === true) || (opt === 'No' && a === false);
+          return `<div class="review-choice ${chosen ? 'chosen' : ''}">
+            <div class="review-choice-marker">${chosen ? CHECK_SVG : ''}</div>
+            <span>${opt}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+
+    // Multiple choice / dropdown — show all options
+    if ((type === 'multiple_choice' || type === 'dropdown') && choices && choices.length) {
+      const selected = Array.isArray(a) ? a : (a ? [a] : []);
+      return `<div class="review-choices">
+        ${choices.map(c => {
+          const chosen = selected.includes(c.ref);
+          return `<div class="review-choice ${chosen ? 'chosen' : ''}">
+            <div class="review-choice-marker">${chosen ? CHECK_SVG : ''}</div>
+            <span>${escapeHtml(c.label)}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+
+    // Free-text, number, date — just show the value
+    return `<span class="review-a">${formatAnswer(a)}</span>`;
   }
 
   function formatAnswer(a) {
@@ -1693,6 +1756,13 @@
       label: c, refs: cats.get(c).refs
     }));
     return _progressSections;
+  }
+
+  function eyebrow(entry, label) {
+    const prefix = entry.title_prefix
+      ? `<span class="prefix-tag">${escapeHtml(entry.title_prefix)}</span> `
+      : '';
+    return `<span class="eyebrow"><span class="dot"></span>${prefix}${escapeHtml(label)}</span>`;
   }
 
   function setProgress(currentRef) {

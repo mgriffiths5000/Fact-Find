@@ -40,13 +40,13 @@
       }
     ],
     "stats": {
-      "total_entries": 1054,
+      "total_entries": 1049,
       "sections": 26,
-      "fields": 958,
+      "fields": 953,
       "displays": 60,
       "pages": 6,
       "page_subfields": 25,
-      "logic_rules": 482,
+      "logic_rules": 483,
       "choices_indexed": 4329,
       "thankyou_refs": 2,
       "duplicate_refs_skipped": 0
@@ -11141,22 +11141,6 @@
     },
     {
       "kind": "field",
-      "ref": "e024e49e-b867-4f88-86b6-1a4c59f12315",
-      "id": "hzQWNXsy9qV2",
-      "title": "What percentage of your work is* supervisory work*?",
-      "description": "",
-      "type": "number",
-      "required": false,
-      "allow_multiple_selection": false,
-      "allow_other_choice": false,
-      "choices": [],
-      "properties": {},
-      "part": 1,
-      "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Employment & Finances"
-    },
-    {
-      "kind": "field",
       "ref": "b42840da-f226-43d8-a44f-638975994376",
       "id": "IrF4kmODgibX",
       "title": "Does your job involve any of the following duties or working environments?",
@@ -12615,24 +12599,6 @@
     },
     {
       "kind": "field",
-      "ref": "e8679580-5eb0-490e-a507-d50d42bb6e3d",
-      "id": "uYxaknjZYwLs",
-      "title": "Please give as much detail as possible about any injuries or illnesses?",
-      "description": "e.g. What was wrong? How long were you off work? Were you hospitalised? Have you recovered?",
-      "type": "long_text",
-      "required": true,
-      "allow_multiple_selection": false,
-      "allow_other_choice": false,
-      "choices": [],
-      "properties": {
-        "description": "e.g. What was wrong? How long were you off work? Were you hospitalised? Have you recovered?"
-      },
-      "part": 1,
-      "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Employment & Finances"
-    },
-    {
-      "kind": "field",
       "ref": "e7f99df6-feb0-49b7-a1ac-17e15f895748",
       "id": "vb0LPuOKTkoK",
       "title": "Do you have a second job?",
@@ -13060,73 +13026,6 @@
       "parent_section_ref": "c4e01f77-ea6a-4fa0-a229-4a7b548cbef0",
       "section_category": "Employment & Finances",
       "custom_type": "mortgage_page"
-    },
-    {
-      "kind": "field",
-      "ref": "db42546d-5408-4830-9023-dbb27b707830",
-      "id": "iQy1sphSXJqj",
-      "title": "How much do you pay each month?",
-      "description": "",
-      "type": "number",
-      "required": true,
-      "allow_multiple_selection": false,
-      "allow_other_choice": false,
-      "choices": [],
-      "properties": {},
-      "part": 1,
-      "parent_section_ref": "c4e01f77-ea6a-4fa0-a229-4a7b548cbef0",
-      "section_category": "Employment & Finances"
-    },
-    {
-      "kind": "field",
-      "ref": "a9dc2707-2871-4e7f-9bcb-9e357efdfbc9",
-      "id": "l6FdHYeFW0eh",
-      "title": "When does your current deal end?",
-      "description": "",
-      "type": "date",
-      "required": true,
-      "allow_multiple_selection": false,
-      "allow_other_choice": false,
-      "choices": [],
-      "properties": {
-        "separator": "/",
-        "structure": "DDMMYYYY"
-      },
-      "part": 1,
-      "parent_section_ref": "c4e01f77-ea6a-4fa0-a229-4a7b548cbef0",
-      "section_category": "Employment & Finances"
-    },
-    {
-      "kind": "field",
-      "ref": "13c3792f-ae62-4eae-91de-09046727f3c6",
-      "id": "GUNj8wnRUimJ",
-      "title": "Is this on a repayment or interest only basis?",
-      "description": "",
-      "type": "multiple_choice",
-      "required": true,
-      "allow_multiple_selection": false,
-      "allow_other_choice": false,
-      "choices": [
-        {
-          "id": "dmUivG8v4XZv",
-          "ref": "ecfd3cdd-77e7-432b-ae81-fb7232624abc",
-          "label": "Repayment"
-        },
-        {
-          "id": "eXCaiQqNRw1l",
-          "ref": "5735a7ed-296a-43dd-ad1c-5694d5bed67b",
-          "label": "Interest Only"
-        }
-      ],
-      "properties": {
-        "randomize": false,
-        "allow_multiple_selection": false,
-        "allow_other_choice": false,
-        "vertical_alignment": true
-      },
-      "part": 1,
-      "parent_section_ref": "c4e01f77-ea6a-4fa0-a229-4a7b548cbef0",
-      "section_category": "Employment & Finances"
     },
     {
       "kind": "field",
@@ -17862,7 +17761,8 @@
       "properties": {},
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -17909,7 +17809,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -17927,7 +17828,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -17943,7 +17845,8 @@
       "properties": {},
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -17959,7 +17862,8 @@
       "properties": {},
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -17977,7 +17881,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -18014,7 +17919,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -18032,7 +17938,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -18048,7 +17955,8 @@
       "properties": {},
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "field",
@@ -18080,7 +17988,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Weight Loss Medication"
     },
     {
       "kind": "page",
@@ -20967,7 +20876,7 @@
       "kind": "field",
       "ref": "76470212-59ef-414a-a63d-0833ee7f9018",
       "id": "7GXjk1g60NFW",
-      "title": "When did you* first have symptoms* of {{field:bc184150-9714-4312-aa75-23125d53437c}}, consult a medical professional about mental health symptoms or feel that your mental health was being impacted in a negative way? ",
+      "title": "When did you **first** have symptoms of {{field:bc184150-9714-4312-aa75-23125d53437c}}, consult a medical professional about mental health symptoms or feel that your mental health was being impacted in a negative way?",
       "description": "",
       "type": "long_text",
       "required": true,
@@ -20983,7 +20892,7 @@
       "kind": "field",
       "ref": "894db91e-8f72-4cbc-a298-0c7776d5de64",
       "id": "7fEAES2XLmj4",
-      "title": "When did you* last have symptoms* of {{field:bc184150-9714-4312-aa75-23125d53437c}}, consult a medical professional about mental health symptoms or feel that your mental health was being impacted in a negative way? ",
+      "title": "When did you **last** have symptoms of {{field:bc184150-9714-4312-aa75-23125d53437c}}, consult a medical professional about mental health symptoms or feel that your mental health was being impacted in a negative way?",
       "description": "",
       "type": "long_text",
       "required": true,
@@ -63049,7 +62958,7 @@
         },
         {
           "action": "jump",
-          "target_ref": "e7f99df6-feb0-49b7-a1ac-17e15f895748",
+          "target_ref": "cbed420e-52bc-471e-ab18-ebc0f82b5d5c",
           "condition": {
             "op": "always",
             "vars": []
@@ -63467,7 +63376,7 @@
         },
         {
           "action": "jump",
-          "target_ref": "e024e49e-b867-4f88-86b6-1a4c59f12315",
+          "target_ref": "b42840da-f226-43d8-a44f-638975994376",
           "condition": {
             "op": "is",
             "vars": [
@@ -63544,7 +63453,7 @@
       "actions": [
         {
           "action": "jump",
-          "target_ref": "e024e49e-b867-4f88-86b6-1a4c59f12315",
+          "target_ref": "b42840da-f226-43d8-a44f-638975994376",
           "condition": {
             "op": "is",
             "vars": [
@@ -76651,6 +76560,23 @@
       "actions": [
         {
           "action": "jump",
+          "target_ref": "4932a3cc-970c-4e55-9b67-4b50aa45d04a",
+          "condition": {
+            "op": "is",
+            "vars": [
+              {
+                "type": "field",
+                "value": "85379de5-8e97-4010-b179-f8e1c93939cd"
+              },
+              {
+                "type": "choice",
+                "value": "b94bebec-1f46-408f-b9da-31fe1625701b"
+              }
+            ]
+          }
+        },
+        {
+          "action": "jump",
           "target_ref": "b6cc0508-c845-414a-90fa-9dd965d1e664",
           "condition": {
             "op": "is",
@@ -87446,6 +87372,28 @@
           "condition": {
             "op": "always",
             "vars": []
+          }
+        }
+      ]
+    },
+    {
+      "source_ref": "041609d1-08f7-42e7-b00e-014102c09732",
+      "actions": [
+        {
+          "action": "jump",
+          "target_ref": "0b76de7d-0f1a-41c6-9f19-c97501e908c4",
+          "condition": {
+            "op": "is",
+            "vars": [
+              {
+                "type": "field",
+                "value": "041609d1-08f7-42e7-b00e-014102c09732"
+              },
+              {
+                "type": "choice",
+                "value": "e1327e3d-73a7-4cbd-ba49-f773ea082a48"
+              }
+            ]
           }
         }
       ]
