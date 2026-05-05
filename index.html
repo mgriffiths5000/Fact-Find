@@ -300,7 +300,100 @@
     color: var(--ink-soft);
   }
 
-  /* Question transitions */
+  /* ========== Sectioned progress bar ========== */
+  .progress-sections {
+    display: flex; align-items: center; gap: 6px; flex: 1; max-width: 380px;
+  }
+  .progress-segment {
+    flex: 1; display: flex; flex-direction: column; align-items: stretch; gap: 3px;
+  }
+  .progress-segment-label {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-weight: 500;
+  }
+  .progress-segment-bar {
+    height: 3px; background: var(--line); border-radius: 99px; overflow: hidden;
+  }
+  .progress-segment-fill {
+    height: 100%; background: var(--accent); border-radius: 99px;
+    transition: width .35s cubic-bezier(.6,.0,.2,1);
+    width: 0%;
+  }
+  .progress-segment.done .progress-segment-label { color: var(--accent-ink); }
+  .progress-segment.active .progress-segment-label { color: var(--ink-soft); }
+
+  /* ========== Custom field types ========== */
+  /* Occupation search */
+  .occ-search-wrap { position: relative; }
+  .occ-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 20;
+    background: #fff; border: 1px solid var(--accent); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg); max-height: 260px; overflow-y: auto;
+  }
+  .occ-option {
+    padding: 10px 16px; font-size: 15px; cursor: pointer; color: var(--ink);
+    border-bottom: 1px solid var(--line);
+  }
+  .occ-option:last-child { border-bottom: none; }
+  .occ-option:hover, .occ-option.focused { background: var(--accent-soft); }
+  .occ-option mark { background: transparent; color: var(--accent-ink); font-weight: 600; }
+
+  /* Sick pay */
+  .sick-options { display: grid; gap: 10px; margin-top: 4px; }
+  .sick-option { background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .sick-option-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; user-select: none; }
+  .sick-option-header:hover { background: #fdfcf9; }
+  .sick-check { width: 18px; height: 18px; border: 2px solid var(--line-strong); border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .sick-option.selected .sick-check { background: var(--accent); border-color: var(--accent); }
+  .sick-check svg { display: none; }
+  .sick-option.selected .sick-check svg { display: block; }
+  .sick-option.selected { border-color: var(--accent); }
+  .sick-sub { padding: 0 16px 14px 46px; display: none; gap: 10px; }
+  .sick-option.selected .sick-sub { display: flex; }
+  .sick-sub-pair { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .sick-sub-pair label { font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+  .sick-sub-pair input { width: 70px; }
+
+  /* Work type */
+  .work-type-grid { display: grid; gap: 14px; margin-top: 4px; }
+  .work-type-row { background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .work-type-header { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+  .work-type-label { flex: 1; font-size: 15px; color: var(--ink); }
+  .work-type-desc { font-size: 12px; color: var(--ink-mute); }
+  .pct-input-wrap { display: flex; align-items: center; gap: 6px; }
+  .pct-input { width: 70px; text-align: right; }
+  .pct-suffix { color: var(--ink-soft); font-size: 14px; }
+  .work-type-detail { padding: 0 16px 14px; display: none; }
+  .work-type-row.has-value .work-type-detail { display: block; }
+  .pct-total { font-size: 13px; margin-top: 10px; }
+  .pct-total.over { color: var(--warn); }
+  .pct-total.ok { color: var(--accent-ink); }
+
+  /* Mortgage page */
+  .mortgage-grid { display: grid; gap: 18px; margin-top: 4px; }
+  .mortgage-field { display: grid; gap: 6px; }
+  .mortgage-label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
+  .mortgage-check-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; cursor: pointer; user-select: none; }
+  .mortgage-check-box { width: 16px; height: 16px; border: 2px solid var(--line-strong); border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .mortgage-check-row.checked .mortgage-check-box { background: var(--accent); border-color: var(--accent); }
+  .mortgage-check-label { font-size: 13px; color: var(--ink-soft); }
+
+  /* Dependents widget */
+  .dependents-list { display: grid; gap: 10px; margin-top: 4px; }
+  .dependent-card { background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: var(--radius-md); padding: 14px 16px; box-shadow: var(--shadow-sm); }
+  .dependent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .dependent-card-title { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
+  .dependent-remove { background: none; border: none; cursor: pointer; color: var(--ink-mute); font-size: 18px; padding: 0 4px; line-height: 1; }
+  .dependent-remove:hover { color: var(--warn); }
+  .dependent-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 500px) { .dependent-fields { grid-template-columns: 1fr; } }
+  .dependent-field { display: grid; gap: 4px; }
+  .dependent-field label { font-size: 12px; color: var(--ink-mute); }
+  .dep-no-check { display: flex; align-items: center; gap: 10px; padding: 12px 0; cursor: pointer; user-select: none; border-top: 1px solid var(--line); margin-top: 8px; }
+  .dep-no-box { width: 16px; height: 16px; border: 2px solid var(--line-strong); border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .dep-no-check.checked .dep-no-box { background: var(--accent); border-color: var(--accent); }
+  .dep-no-label { font-size: 14px; color: var(--ink-soft); }
   .stage > * { animation: enter .42s cubic-bezier(.2,.7,.2,1) both; }
   @keyframes enter {
     from { opacity: 0; transform: translateY(8px); }
@@ -392,8 +485,7 @@
       <span class="sep">·</span>
       <span class="sub">Protection Fact Find</span>
     </div>
-    <div class="progress" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
-    <div class="progress-label" id="progressLabel">—</div>
+    <div class="progress-sections" id="progressSections"></div>
   </div>
 </header>
 
@@ -498,7 +590,7 @@
         <span class="eyebrow"><span class="dot"></span>Protection fact find</span>
         <h1>Let's get the questions <em>out of the way</em>.</h1>
         <p>This form gathers everything insurers need to assess an application for life cover, critical illness cover or income protection.</p>
-        <p>Most clients take 30–60 minutes. Your progress saves automatically as you go, so you can stop and pick up later on the same device.</p>
+        <p>Most clients take 20–30 minutes. Your progress saves automatically as you go, so you can stop and pick up later on the same device.</p>
         <p>Have your bank details and recent health information to hand if you can.</p>
         <div class="actions">
           <button class="btn primary" id="startBtn">Begin <span aria-hidden="true">→</span></button>
@@ -526,19 +618,24 @@
         renderSplash(null);
       });
     }
-    setProgress(0);
+    setProgress(null);
   }
 
   // -------------------- Navigation --------------------
   function goTo(ref) {
     if (ref == null) return finish();
     const entry = orderById.get(ref);
-    if (!entry) return finish();   // unknown ref — terminate gracefully
+    if (!entry) {
+      // Target was removed from schema — find next valid sequential entry
+      const pos = schema.order.findIndex(e => e.ref === ref);
+      const next = pos >= 0 ? schema.order.slice(pos + 1).find(e => orderById.has(e.ref)) : null;
+      return next ? goTo(next.ref) : finish();
+    }
     currentRef = ref;
     pendingValue = (entry.kind === 'field') ? cloneValue(answers[ref]) : null;
     saveState();
     renderEntry(entry);
-    setProgress(positionById.get(ref) / Math.max(1, schema.order.length - 1) * 100);
+    setProgress(ref);
   }
 
   function pushHistoryAndGo(targetRef) {
@@ -561,12 +658,36 @@
     } else if (entry.kind === 'page') {
       const ok = validatePage(entry);
       if (!ok) return;
-      // Subfield values are already committed to answers in wirePageInputs
+    } else if (entry.kind === 'custom') {
+      const ok = validateCustom(entry);
+      if (!ok) return;
+    } else if (entry.kind === 'field' && entry.ui_hint === 'occupation_search') {
+      if (entry.required && !pendingValue) {
+        const e = document.getElementById('err');
+        if (e) { e.textContent = 'Please select an occupation.'; e.classList.add('show'); }
+        return;
+      }
+      answers[currentRef] = pendingValue;
     }
     saveState();
     const target = resolveJump(entry);
     if (target == null) return finish();
     pushHistoryAndGo(target);
+  }
+
+  function validateCustom(entry) {
+    const errEl = document.getElementById('err');
+    if (errEl) errEl.classList.remove('show');
+    function fail(msg) {
+      if (errEl) { errEl.textContent = msg; errEl.classList.add('show'); }
+      return false;
+    }
+    if (entry.custom_type === 'work_type') {
+      let total = 0;
+      stage().querySelectorAll('[data-pct]').forEach(inp => { total += Number(inp.value) || 0; });
+      if (total !== 100) return fail(`Percentages must add up to 100% (currently ${total}%). Please adjust.`);
+    }
+    return true;
   }
 
   // -------------------- Logic engine --------------------
@@ -575,34 +696,36 @@
     if (rule) {
       for (const action of rule.actions) {
         if (evalCondition(action.condition)) {
-          return resolveJumpTarget(action.target_ref, entry.part);
+          const target = resolveJumpTarget(action.target_ref, entry.part);
+          // If the target was a deleted/internal field, skip this action and continue
+          // evaluating subsequent rules (eventually falling through to sequential order).
+          if (target != null && orderById.has(target)) return target;
+          if (target == null && !isThankyouLike(action.target_ref)) continue;
+          if (target == null) return null; // thankyou → finish
         }
       }
     }
-    // No matching rule — fall through to the next entry in document order
+    // Fall through to the next entry in document order
     const pos = positionById.get(entry.ref);
     if (pos == null) return null;
     if (pos + 1 >= schema.order.length) return null;
     return schema.order[pos + 1].ref;
   }
 
-  // The original Typeform was 7 separate forms linked by "thank-you" redirect
-  // screens that pointed to the next form. Crucially, all 7 forms reuse the SAME
-  // UUID (ffc7d141-...) for that redirect screen, so a logic rule "jump to <ref>"
-  // means different things depending on which part it's sourced from. We use the
-  // source field's part number to figure out where to actually go.
+  function isThankyouLike(ref) {
+    return thankyouRefs.has(ref) || ref === 'default_tys' || (typeof ref === 'string' && ref.startsWith('default_'));
+  }
+
   function resolveJumpTarget(targetRef, sourcePart) {
-    const isThankyouRef = thankyouRefs.has(targetRef) ||
-                          targetRef === 'default_tys' ||
-                          (typeof targetRef === 'string' && targetRef.startsWith('default_'));
-    if (isThankyouRef) {
-      // Advance to the first entry of any later part
+    if (isThankyouLike(targetRef)) {
       for (const e of schema.order) {
         if (e.part > sourcePart) return e.ref;
       }
-      // No later part exists — we're at the end of Part 7, finish the form
       return null;
     }
+    // If the target no longer exists (e.g. was an absorbed sub-question), return null
+    // so the caller can fall through to the next action or sequential order.
+    if (!orderById.has(targetRef)) return null;
     return targetRef;
   }
 
@@ -663,10 +786,14 @@
       renderDisplay(entry);
     } else if (entry.kind === 'page') {
       renderPage(entry);
+    } else if (entry.kind === 'custom') {
+      renderCustom(entry);
+    } else if (entry.kind === 'field' && entry.ui_hint === 'occupation_search') {
+      renderOccupationSearch(entry);
     } else if (entry.kind === 'field') {
       renderField(entry);
     } else {
-      renderField(entry); // fallback
+      renderField(entry);
     }
   }
 
@@ -798,6 +925,388 @@
       return false;
     }
     return true;
+  }
+
+  // ── Occupation search combobox ──────────────────────────────────────────────
+  function renderOccupationSearch(entry) {
+    const stored = answers[entry.ref] || '';
+    const storedLabel = stored && schema.choice_index[stored] ? schema.choice_index[stored].label : stored;
+    stage().innerHTML = `
+      <div class="card">
+        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+        ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
+        <div class="field occ-search-wrap">
+          <input class="input" id="occInput" type="text" autocomplete="off" placeholder="Type to search…" value="${escapeAttr(storedLabel)}" />
+          <div class="occ-dropdown" id="occDropdown" style="display:none"></div>
+          <input type="hidden" id="occValue" value="${escapeAttr(stored)}" />
+        </div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+    wireNav();
+    pendingValue = stored || null;
+
+    const inp = document.getElementById('occInput');
+    const drop = document.getElementById('occDropdown');
+    const hidden = document.getElementById('occValue');
+    let focusedIdx = -1;
+    const choices = entry.choices || [];
+
+    function render(q) {
+      const lower = q.toLowerCase();
+      const matches = q.length < 2 ? [] : choices.filter(c => c.label.toLowerCase().includes(lower)).slice(0, 40);
+      if (!matches.length) { drop.style.display = 'none'; return; }
+      drop.innerHTML = matches.map((c, i) => {
+        const hi = c.label.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<mark>$1</mark>');
+        return `<div class="occ-option" data-ref="${escapeAttr(c.ref)}" data-idx="${i}">${hi}</div>`;
+      }).join('');
+      drop.style.display = 'block';
+      focusedIdx = -1;
+      drop.querySelectorAll('.occ-option').forEach(opt => {
+        opt.addEventListener('mousedown', e => {
+          e.preventDefault();
+          select(opt.dataset.ref, opt.textContent);
+        });
+      });
+    }
+
+    function select(ref, label) {
+      inp.value = choices.find(c => c.ref === ref)?.label || label;
+      hidden.value = ref;
+      pendingValue = ref;
+      drop.style.display = 'none';
+    }
+
+    inp.addEventListener('input', () => { render(inp.value); hidden.value = ''; pendingValue = null; });
+    inp.addEventListener('keydown', e => {
+      const opts = [...drop.querySelectorAll('.occ-option')];
+      if (e.key === 'ArrowDown') { e.preventDefault(); focusedIdx = Math.min(focusedIdx+1, opts.length-1); opts.forEach((o,i) => o.classList.toggle('focused', i===focusedIdx)); if (opts[focusedIdx]) opts[focusedIdx].scrollIntoView({block:'nearest'}); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); focusedIdx = Math.max(focusedIdx-1, 0); opts.forEach((o,i) => o.classList.toggle('focused', i===focusedIdx)); }
+      else if (e.key === 'Enter' && focusedIdx >= 0 && opts[focusedIdx]) { e.preventDefault(); select(opts[focusedIdx].dataset.ref, opts[focusedIdx].textContent); }
+    });
+    inp.addEventListener('blur', () => setTimeout(() => { drop.style.display = 'none'; }, 150));
+    setTimeout(() => inp.focus(), 60);
+  }
+
+  // ── Dispatch custom field types ──────────────────────────────────────────────
+  function renderCustom(entry) {
+    if (entry.custom_type === 'sick_pay')     renderSickPay(entry);
+    else if (entry.custom_type === 'work_type')    renderWorkType(entry);
+    else if (entry.custom_type === 'mortgage_page') renderMortgagePage(entry);
+    else if (entry.custom_type === 'dependents')   renderDependents(entry);
+    else renderField({...entry, kind:'field', type:'short_text'});
+  }
+
+  // ── Sick pay custom page ──────────────────────────────────────────────────────
+  function renderSickPay(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+    const OPTS = [
+      { key: 'employer', label: 'Employer sick pay scheme', hasSub: true },
+      { key: 'ssp', label: 'Statutory Sick Pay (SSP)' },
+      { key: 'other', label: 'Other' },
+      { key: 'unsure', label: 'Unsure' },
+    ];
+    function mkCheck(k) { return stored[k] ? 'selected' : ''; }
+
+    const optHtml = OPTS.map(o => `
+      <div class="sick-option ${mkCheck(o.key)}" data-key="${o.key}">
+        <div class="sick-option-header">
+          <div class="sick-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span>${escapeHtml(o.label)}</span>
+        </div>
+        ${o.hasSub ? `<div class="sick-sub">
+          <div class="sick-sub-pair">
+            <label>Full pay:</label>
+            <input class="input pct-input" type="number" min="0" max="52" id="sick_full" value="${escapeAttr(stored.full_months||'')}"> <span class="pct-suffix">months</span>
+          </div>
+          <div class="sick-sub-pair">
+            <label>Half pay:</label>
+            <input class="input pct-input" type="number" min="0" max="52" id="sick_half" value="${escapeAttr(stored.half_months||'')}"> <span class="pct-suffix">months</span>
+          </div>
+        </div>` : ''}
+      </div>`).join('');
+
+    stage().innerHTML = `
+      <div class="card">
+        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <p class="q-desc">Select all that apply.</p>
+        <div class="sick-options">${optHtml}</div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+    wireNav();
+
+    function save() {
+      const val = {};
+      stage().querySelectorAll('.sick-option.selected').forEach(el => { val[el.dataset.key] = true; });
+      const full = document.getElementById('sick_full');
+      const half = document.getElementById('sick_half');
+      if (full) val.full_months = full.value;
+      if (half) val.half_months = half.value;
+      answers[entry.ref] = val;
+    }
+
+    stage().querySelectorAll('.sick-option').forEach(el => {
+      el.querySelector('.sick-option-header').addEventListener('click', () => {
+        el.classList.toggle('selected');
+        save();
+      });
+    });
+    stage().querySelectorAll('#sick_full, #sick_half').forEach(inp => {
+      inp.addEventListener('input', save);
+      inp.addEventListener('click', e => e.stopPropagation());
+    });
+    save(); // initialise from stored values
+  }
+
+  // ── Work type percentage page ─────────────────────────────────────────────────
+  function renderWorkType(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+    const TYPES = [
+      { key: 'admin',   label: 'Administrative',  desc: 'Office, computer, phone work' },
+      { key: 'super',   label: 'Supervisory',      desc: 'Managing or overseeing others' },
+      { key: 'light',   label: 'Light manual',     desc: 'Moving or lifting under 10 kg regularly', detail: true },
+      { key: 'heavy',   label: 'Heavy manual',     desc: 'Machinery or lifting over 10 kg regularly', detail: true },
+    ];
+
+    const rowsHtml = TYPES.map(t => {
+      const pct = stored[t.key + '_pct'] || '';
+      const hasVal = pct && Number(pct) > 0;
+      return `<div class="work-type-row ${hasVal ? 'has-value' : ''}" data-key="${t.key}">
+        <div class="work-type-header">
+          <div class="work-type-label">${t.label} <span class="work-type-desc">— ${t.desc}</span></div>
+          <div class="pct-input-wrap">
+            <input class="input pct-input" type="number" min="0" max="100" data-pct="${t.key}" value="${escapeAttr(pct)}" placeholder="0" />
+            <span class="pct-suffix">%</span>
+          </div>
+        </div>
+        ${t.detail ? `<div class="work-type-detail">
+          <label class="sub-label" style="display:block;margin-bottom:6px">Please describe your manual duties</label>
+          <textarea class="input" rows="2" data-detail="${t.key}" placeholder="e.g. operating a forklift, loading vehicles…">${escapeHtml(stored[t.key + '_detail'] || '')}</textarea>
+        </div>` : ''}
+      </div>`;
+    }).join('');
+
+    stage().innerHTML = `
+      <div class="card">
+        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <p class="q-desc">Enter the approximate percentage for each category. The total must add up to 100%.</p>
+        <div class="work-type-grid">${rowsHtml}</div>
+        <div class="pct-total" id="pctTotal"></div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+    wireNav();
+
+    function update() {
+      let total = 0;
+      const val = {};
+      stage().querySelectorAll('[data-pct]').forEach(inp => {
+        const n = Number(inp.value) || 0;
+        const key = inp.dataset.pct;
+        val[key + '_pct'] = inp.value;
+        total += n;
+        const row = inp.closest('.work-type-row');
+        row.classList.toggle('has-value', n > 0);
+      });
+      stage().querySelectorAll('[data-detail]').forEach(ta => {
+        val[ta.dataset.detail + '_detail'] = ta.value;
+      });
+      const tot = document.getElementById('pctTotal');
+      if (tot) {
+        tot.textContent = `Total: ${total}%`;
+        tot.className = 'pct-total ' + (total === 100 ? 'ok' : total > 100 ? 'over' : '');
+      }
+      answers[entry.ref] = val;
+      return total;
+    }
+
+    stage().querySelectorAll('[data-pct],[data-detail]').forEach(el => el.addEventListener('input', update));
+    update();
+
+    // Override next() validation for this field
+    const origNext = document.getElementById('nextBtn');
+    if (origNext) {
+      origNext.addEventListener('click', (e) => {
+        // Validation is in next(), but we re-check total here too
+      }, true);
+    }
+  }
+
+  // ── Mortgage consolidated page ────────────────────────────────────────────────
+  function renderMortgagePage(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+    const RATE_TYPES = ['Fixed','Variable','Discount','Tracker','Other'];
+
+    stage().innerHTML = `
+      <div class="card">
+        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        <h1 class="q-title">Mortgage Details</h1>
+        <p class="q-desc">Fill in as many details as you can.</p>
+        <div class="mortgage-grid">
+          <div class="mortgage-field">
+            <div class="mortgage-label">Outstanding balance (£)</div>
+            <input class="input" id="m_balance" type="number" min="0" placeholder="e.g. 200000" value="${escapeAttr(stored.balance||'')}">
+            <div class="mortgage-check-row ${stored.covered_life?'checked':''}" id="m_life_chk">
+              <div class="mortgage-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="mortgage-check-label">Currently covered by a life insurance policy</span>
+            </div>
+            <div class="mortgage-check-row ${stored.covered_ci?'checked':''}" id="m_ci_chk">
+              <div class="mortgage-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="mortgage-check-label">Currently covered by a critical illness policy</span>
+            </div>
+          </div>
+          <div class="mortgage-field">
+            <div class="mortgage-label">Years remaining</div>
+            <input class="input" id="m_years" type="number" min="0" max="40" placeholder="e.g. 22" value="${escapeAttr(stored.years||'')}">
+          </div>
+          <div class="mortgage-field">
+            <div class="mortgage-label">Monthly payment (£)</div>
+            <input class="input" id="m_payment" type="number" min="0" placeholder="e.g. 850" value="${escapeAttr(stored.payment||'')}">
+            <div class="mortgage-check-row ${stored.covered_ip?'checked':''}" id="m_ip_chk">
+              <div class="mortgage-check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="mortgage-check-label">Currently covered by an income protection policy</span>
+            </div>
+          </div>
+          <div class="mortgage-field">
+            <div class="mortgage-label">Current interest rate (%)</div>
+            <input class="input" id="m_rate" type="number" min="0" max="30" step="0.01" placeholder="e.g. 4.25" value="${escapeAttr(stored.rate||'')}">
+          </div>
+          <div class="mortgage-field">
+            <div class="mortgage-label">Type of rate</div>
+            <select class="input" id="m_rate_type">
+              <option value="">— Select —</option>
+              ${RATE_TYPES.map(r => `<option value="${r}" ${stored.rate_type===r?'selected':''}>${r}</option>`).join('')}
+            </select>
+          </div>
+          <div class="mortgage-field">
+            <div class="mortgage-label">End date of current deal</div>
+            <input class="input" id="m_deal_end" type="date" value="${escapeAttr(stored.deal_end||'')}">
+          </div>
+          <div class="mortgage-field">
+            <div class="mortgage-label">Repayment type</div>
+            <select class="input" id="m_repay_type">
+              <option value="">— Select —</option>
+              <option value="Repayment" ${stored.repay_type==='Repayment'?'selected':''}>Repayment</option>
+              <option value="Interest only" ${stored.repay_type==='Interest only'?'selected':''}>Interest only</option>
+            </select>
+          </div>
+        </div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+    wireNav();
+
+    function save() {
+      const val = {
+        balance:    document.getElementById('m_balance')?.value,
+        years:      document.getElementById('m_years')?.value,
+        payment:    document.getElementById('m_payment')?.value,
+        rate:       document.getElementById('m_rate')?.value,
+        rate_type:  document.getElementById('m_rate_type')?.value,
+        deal_end:   document.getElementById('m_deal_end')?.value,
+        repay_type: document.getElementById('m_repay_type')?.value,
+        covered_life: stage().querySelector('#m_life_chk')?.classList.contains('checked'),
+        covered_ci:   stage().querySelector('#m_ci_chk')?.classList.contains('checked'),
+        covered_ip:   stage().querySelector('#m_ip_chk')?.classList.contains('checked'),
+      };
+      answers[entry.ref] = val;
+    }
+
+    stage().querySelectorAll('input,select').forEach(el => el.addEventListener('input', save));
+    ['#m_life_chk','#m_ci_chk','#m_ip_chk'].forEach(sel => {
+      const el = stage().querySelector(sel);
+      if (el) el.addEventListener('click', () => { el.classList.toggle('checked'); save(); });
+    });
+    save();
+  }
+
+  // ── Financial dependents widget ───────────────────────────────────────────────
+  function renderDependents(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref])
+      ? answers[entry.ref] : { dependents: [], none: false };
+    let deps = stored.dependents ? [...stored.dependents] : [];
+    let noDeps = stored.none || false;
+
+    function save() {
+      answers[entry.ref] = { dependents: deps, none: noDeps };
+    }
+
+    function render() {
+      const container = document.getElementById('depList');
+      if (!container) return;
+      container.innerHTML = deps.map((d, i) => `
+        <div class="dependent-card">
+          <div class="dependent-card-header">
+            <div class="dependent-card-title">Dependent ${i+1}</div>
+            <button class="dependent-remove" data-i="${i}" type="button" title="Remove">✕</button>
+          </div>
+          <div class="dependent-fields">
+            <div class="dependent-field">
+              <label>Full name</label>
+              <input class="input" type="text" data-dep="${i}" data-field="name" value="${escapeAttr(d.name||'')}">
+            </div>
+            <div class="dependent-field">
+              <label>Date of birth</label>
+              <input class="input" type="date" data-dep="${i}" data-field="dob" value="${escapeAttr(d.dob||'')}">
+            </div>
+            <div class="dependent-field" style="grid-column:1/-1">
+              <label>Relationship to you</label>
+              <input class="input" type="text" data-dep="${i}" data-field="rel" placeholder="e.g. Son, Daughter, Partner" value="${escapeAttr(d.rel||'')}">
+            </div>
+          </div>
+        </div>`).join('');
+
+      // Wire up remove buttons and field changes
+      container.querySelectorAll('.dependent-remove').forEach(btn => {
+        btn.addEventListener('click', () => { deps.splice(Number(btn.dataset.i), 1); save(); render(); });
+      });
+      container.querySelectorAll('[data-dep]').forEach(inp => {
+        inp.addEventListener('input', () => {
+          const i = Number(inp.dataset.dep);
+          if (!deps[i]) deps[i] = {};
+          deps[i][inp.dataset.field] = inp.value;
+          save();
+        });
+      });
+
+      // No-dependents checkbox state
+      const nochk = document.getElementById('noDepChk');
+      if (nochk) nochk.classList.toggle('checked', noDeps);
+    }
+
+    stage().innerHTML = `
+      <div class="card">
+        <span class="eyebrow"><span class="dot"></span>Part ${entry.part}</span>
+        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <p class="q-desc">Add everyone who relies on your income — children, a partner, or anyone else financially dependent on you.</p>
+        <div class="dependents-list" id="depList"></div>
+        ${!noDeps ? `<div style="margin-top:10px">
+          <button class="btn ghost" id="addDepBtn" type="button" style="border:1px dashed var(--line-strong);width:100%;justify-content:center">+ Add dependent</button>
+        </div>` : ''}
+        <div class="dep-no-check ${noDeps?'checked':''}" id="noDepChk">
+          <div class="dep-no-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="dep-no-label">No financial dependents</span>
+        </div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+    wireNav();
+    render();
+
+    document.getElementById('addDepBtn')?.addEventListener('click', () => {
+      deps.push({ name:'', dob:'', rel:'' }); noDeps = false; save(); render();
+    });
+    document.getElementById('noDepChk')?.addEventListener('click', () => {
+      noDeps = !noDeps; if (noDeps) deps = []; save();
+      render();
+      // Re-attach nav wiring since render() replaces inner HTML
+      wireNav();
+      document.getElementById('noDepChk')?.addEventListener('click', arguments.callee);
+    });
   }
 
   function renderField(entry) {
@@ -958,7 +1467,7 @@
 
   // -------------------- Finish / review --------------------
   function finish() {
-    setProgress(100);
+    setProgress(null);
     const groups = buildReviewGroups();
     const sections = groups.map(g => `
       <div class="review-section">
@@ -998,7 +1507,6 @@
         groups.push(current);
         lastPart = entry.part;
       } else if (entry.kind === 'page') {
-        // Multi-question page — render as its own section with each subfield as a row
         current = { title: stripFormatting(resolveTemplates(entry.title)), rows: [] };
         groups.push(current);
         lastPart = entry.part;
@@ -1007,6 +1515,18 @@
           if (v !== undefined && v !== null && v !== '') {
             current.rows.push({ q: stripFormatting(sf.title), a: v, ref: sf.ref, type: sf.type });
           }
+        }
+      } else if (entry.kind === 'custom') {
+        // Custom fields produce their own section heading + structured rows
+        const a = answers[entry.ref];
+        if (a !== undefined && a !== null) {
+          if (!current || lastPart !== entry.part) {
+            current = { title: `Part ${entry.part}`, rows: [] };
+            groups.push(current);
+            lastPart = entry.part;
+          }
+          const rows = renderCustomReviewRows(entry, a);
+          current.rows.push(...rows);
         }
       } else if (entry.kind === 'field' && answers[entry.ref] !== undefined && answers[entry.ref] !== null && answers[entry.ref] !== '') {
         if (!current || lastPart !== entry.part) {
@@ -1017,8 +1537,54 @@
         current.rows.push({ q: stripFormatting(entry.title), a: answers[entry.ref], ref: entry.ref, type: entry.type });
       }
     }
-    // Drop empty groups
     return groups.filter(g => g.rows.length > 0);
+  }
+
+  function renderCustomReviewRows(entry, val) {
+    const rows = [];
+    if (!val || typeof val !== 'object') {
+      rows.push({ q: stripFormatting(entry.title), a: String(val||'') });
+      return rows;
+    }
+    if (entry.custom_type === 'sick_pay') {
+      const labels = { employer:'Employer sick pay', ssp:'Statutory Sick Pay', other:'Other', unsure:'Unsure' };
+      const selected = Object.keys(labels).filter(k => val[k]);
+      rows.push({ q: 'Sick pay arrangements', a: selected.map(k => labels[k]).join(', ') || 'None selected' });
+      if (val.employer && (val.full_months || val.half_months)) {
+        rows.push({ q: 'Employer scheme detail', a: `${val.full_months||0} months full pay, ${val.half_months||0} months half pay` });
+      }
+    } else if (entry.custom_type === 'work_type') {
+      const TYPES = [
+        {key:'admin',label:'Administrative'},{key:'super',label:'Supervisory'},
+        {key:'light',label:'Light manual'},{key:'heavy',label:'Heavy manual'},
+      ];
+      TYPES.forEach(t => {
+        if (val[t.key+'_pct'] && Number(val[t.key+'_pct']) > 0) {
+          rows.push({ q: `${t.label} work`, a: `${val[t.key+'_pct']}%` });
+          if (val[t.key+'_detail']) rows.push({ q: `${t.label} work — details`, a: val[t.key+'_detail'] });
+        }
+      });
+    } else if (entry.custom_type === 'mortgage_page') {
+      if (val.balance)    rows.push({ q: 'Outstanding mortgage balance', a: `£${val.balance}` });
+      if (val.years)      rows.push({ q: 'Years remaining', a: val.years });
+      if (val.payment)    rows.push({ q: 'Monthly payment', a: `£${val.payment}` });
+      if (val.rate)       rows.push({ q: 'Interest rate', a: `${val.rate}%` });
+      if (val.rate_type)  rows.push({ q: 'Rate type', a: val.rate_type });
+      if (val.deal_end)   rows.push({ q: 'Deal end date', a: val.deal_end });
+      if (val.repay_type) rows.push({ q: 'Repayment type', a: val.repay_type });
+      const cov = [val.covered_life && 'Life insurance', val.covered_ci && 'Critical illness', val.covered_ip && 'Income protection'].filter(Boolean);
+      if (cov.length) rows.push({ q: 'Currently covered by', a: cov.join(', ') });
+    } else if (entry.custom_type === 'dependents') {
+      if (val.none) {
+        rows.push({ q: 'Financial dependents', a: 'None' });
+      } else {
+        (val.dependents || []).forEach((d, i) => {
+          rows.push({ q: `Dependent ${i+1}`, a: [d.name, d.dob, d.rel].filter(Boolean).join(' · ') || 'Details incomplete' });
+        });
+        if (!val.dependents?.length) rows.push({ q: 'Financial dependents', a: 'Not answered' });
+      }
+    }
+    return rows;
   }
 
   function formatAnswer(a) {
@@ -1096,8 +1662,8 @@
       section: g.title,
       items: g.rows.map(r => ({
         question: r.q,
-        answer: renderAnswerText(r.a),
-        ref: r.ref,
+        answer: r.a !== undefined ? (typeof r.a === 'object' ? JSON.stringify(r.a) : renderAnswerText(r.a)) : '',
+        ref: r.ref || '',
       })),
     }));
   }
@@ -1110,10 +1676,58 @@
   }
 
   // -------------------- Helpers --------------------
-  function setProgress(pct) {
-    const p = Math.max(0, Math.min(100, pct));
-    document.getElementById('progressBar').style.width = p + '%';
-    document.getElementById('progressLabel').textContent = p > 0 && p < 100 ? Math.round(p) + '%' : (p === 100 ? 'Complete' : '');
+  // -------------------- Sectioned progress bar --------------------
+  // Build the section list once, lazily
+  let _progressSections = null;
+  function getProgressSections() {
+    if (_progressSections) return _progressSections;
+    const CATEGORY_ORDER = ['Employment & Finances','Lifestyle','Mental Health','Medical History'];
+    const cats = new Map(); // category → {total, seen} 
+    for (const e of schema.order) {
+      const cat = e.section_category || 'Medical History';
+      if (!cats.has(cat)) cats.set(cat, { total: 0, refs: [] });
+      cats.get(cat).total++;
+      cats.get(cat).refs.push(e.ref);
+    }
+    _progressSections = CATEGORY_ORDER.filter(c => cats.has(c)).map(c => ({
+      label: c, refs: cats.get(c).refs
+    }));
+    return _progressSections;
+  }
+
+  function setProgress(currentRef) {
+    const segs = getProgressSections();
+    const container = document.getElementById('progressSections');
+    if (!container) return;
+
+    // Find which category & position we're in
+    const currentIdx = schema.order.findIndex(e => e.ref === currentRef);
+
+    // Count how many entries per category precede the current position
+    const catSeenCount = new Map();
+    for (const s of segs) catSeenCount.set(s.label, 0);
+
+    let currentCat = null;
+    if (currentIdx >= 0) {
+      for (let i = 0; i <= currentIdx; i++) {
+        const e = schema.order[i];
+        const cat = e.section_category || 'Medical History';
+        if (catSeenCount.has(cat)) catSeenCount.set(cat, catSeenCount.get(cat) + 1);
+      }
+      currentCat = schema.order[currentIdx]?.section_category || 'Medical History';
+    }
+
+    container.innerHTML = segs.map(s => {
+      const total = s.refs.length;
+      const seen = catSeenCount.get(s.label) || 0;
+      const pct = total > 0 ? Math.round(seen / total * 100) : 0;
+      const isDone = pct >= 100;
+      const isActive = s.label === currentCat;
+      return `<div class="progress-segment ${isDone ? 'done' : isActive ? 'active' : ''}">
+        <div class="progress-segment-label" title="${s.label}">${s.label}</div>
+        <div class="progress-segment-bar"><div class="progress-segment-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join('');
   }
 
   function onGlobalKey(e) {
