@@ -1095,6 +1095,7 @@
     const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
     const TYPES = [
       { key: 'admin',   label: 'Administrative',  desc: 'Office, computer, phone work' },
+      { key: 'super',   label: 'Supervisory',      desc: 'Managing or overseeing others' },
       { key: 'light',   label: 'Light manual',     desc: 'Moving or lifting under 10 kg regularly', detail: true },
       { key: 'heavy',   label: 'Heavy manual',     desc: 'Machinery or lifting over 10 kg regularly', detail: true },
     ];
@@ -1583,7 +1584,8 @@
       }
     } else if (entry.custom_type === 'work_type') {
       const TYPES = [
-        {key:'admin',label:'Administrative'},{key:'light',label:'Light manual'},{key:'heavy',label:'Heavy manual'},
+        {key:'admin',label:'Administrative'},{key:'super',label:'Supervisory'},
+        {key:'light',label:'Light manual'},{key:'heavy',label:'Heavy manual'},
       ];
       TYPES.forEach(t => {
         if (val[t.key+'_pct'] && Number(val[t.key+'_pct']) > 0) {
