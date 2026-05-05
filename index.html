@@ -1563,7 +1563,7 @@
           groups.push(current);
           lastPart = entry.part;
         }
-        current.rows.push({ q: stripFormatting(entry.title), a: answers[entry.ref], ref: entry.ref, type: entry.type, choices: entry.choices || [] });
+        current.rows.push({ q: stripFormatting(entry.title), a: answers[entry.ref], ref: entry.ref, type: entry.type, choices: entry.choices || [], ui_hint: entry.ui_hint || '' });
       }
     }
     return groups.filter(g => g.rows.length > 0);
@@ -1619,7 +1619,7 @@
   const CHECK_SVG = `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
   function renderReviewAnswer(r) {
-    const { a, type, choices } = r;
+    const { a, type, choices, ui_hint } = r;
 
     // Yes/No — always show both options
     if (type === 'yes_no') {
@@ -1632,6 +1632,11 @@
           </div>`;
         }).join('')}
       </div>`;
+    }
+
+    // Occupation search — hundreds of options, just show what was picked
+    if (ui_hint === 'occupation_search') {
+      return `<span class="review-a">${formatAnswer(a)}</span>`;
     }
 
     // Multiple choice / dropdown — show all options
