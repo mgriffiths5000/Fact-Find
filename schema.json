@@ -17271,7 +17271,7 @@
       "kind": "field",
       "ref": "87715a80-ab9f-4c33-bd8c-9cb30535760b",
       "id": "T6vsbh82eggt",
-      "title": "Horse Riding: Which of the following do you take part in?",
+      "title": "Which of the following do you take part in?",
       "description": "",
       "type": "multiple_choice",
       "required": true,
@@ -17367,7 +17367,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "title_prefix": "Horse Riding"
     },
     {
       "kind": "field",
@@ -19455,7 +19456,7 @@
       "kind": "field",
       "ref": "ebb88373-f844-41f1-91fb-9d26664a26ee",
       "id": "seTbrbehjohh",
-      "title": "Eating Disorder: In the last 5 years, who have you seen for this?",
+      "title": "In the last 5 years, who have you seen for this?",
       "description": "",
       "type": "multiple_choice",
       "required": true,
@@ -19506,7 +19507,8 @@
       },
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
-      "section_category": "Health"
+      "section_category": "Health",
+      "title_prefix": "Eating Disorder"
     },
     {
       "kind": "field",
@@ -20471,7 +20473,7 @@
       "kind": "field",
       "ref": "4468613f-5517-4fe3-aa92-fdcea366d176",
       "id": "sRUDHszIRtpJ",
-      "title": "*Personality Disorder *In the last year, have you been advised any of the following regarding your medication?",
+      "title": "In the last year, have you been advised any of the following regarding your medication?",
       "description": "",
       "type": "multiple_choice",
       "required": true,
@@ -20512,7 +20514,8 @@
       },
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
-      "section_category": "Health"
+      "section_category": "Health",
+      "title_prefix": "Personality Disorder"
     },
     {
       "kind": "field",
@@ -22349,7 +22352,7 @@
       "kind": "field",
       "ref": "345a0aa2-cff4-41e5-9ce2-3fdc57c470b1",
       "id": "uPBaCCIp0EaG",
-      "title": "Cervix: Has your cancer ever recurred",
+      "title": "Has your cancer ever recurred",
       "description": "",
       "type": "yes_no",
       "required": true,
@@ -22359,7 +22362,8 @@
       "properties": {},
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
-      "section_category": "Health"
+      "section_category": "Health",
+      "title_prefix": "Cervix"
     },
     {
       "kind": "field",
@@ -37441,7 +37445,7 @@
       "kind": "field",
       "ref": "aa7c1a14-ca89-42f7-b7e8-7761dd7b9191",
       "id": "uaEphzg5KTr9",
-      "title": "Ankylosing Spondylitis: Do you take any of the following treatments?",
+      "title": "Do you take any of the following treatments?",
       "description": "",
       "type": "multiple_choice",
       "required": true,
@@ -37487,7 +37491,8 @@
       },
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
-      "section_category": "Health"
+      "section_category": "Health",
+      "title_prefix": "Ankylosing Spondylitis"
     },
     {
       "kind": "field",

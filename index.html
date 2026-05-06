@@ -603,6 +603,24 @@
   let history = [];               // stack of refs for back-button
   let currentRef = null;          // ref of currently rendered entry
   let pendingValue = null;        // staged value before commit
+  let _condCtx = null;            // active condition context for eyebrow badge inheritance
+
+  function maybeSetCondCtxFromAnswer(entry, value) {
+    // Only fire for condition-picker questions: Health/Lifestyle, no own prefix, choice answer.
+    const cat = entry.section_category || '';
+    if (entry.title_prefix) return;                         // already a sub-question
+    if (cat !== 'Health' && cat !== 'Lifestyle') return;   // only relevant sections
+    if (!value) return;
+
+    const choices = entry.choices || [];
+    const selected = Array.isArray(value) ? value : [value];
+    const labels = selected
+      .map(ref => choices.find(c => c.ref === ref))
+      .filter(c => c && !isNoneOfAboveChoice(c) && c.label !== 'Yes' && c.label !== 'No')
+      .map(c => c.label);
+
+    if (labels.length > 0) _condCtx = labels.join(', ');
+  }
 
   // -------------------- Boot --------------------
   document.addEventListener('keydown', onGlobalKey);
@@ -678,7 +696,7 @@
           </div>` : ''}
       </div>`;
     document.getElementById('startBtn').addEventListener('click', () => {
-      answers = {}; history = []; clearState();
+      answers = {}; history = []; _condCtx = null; clearState();
       goTo(schema.order[0].ref);
     });
     if (saved) {
@@ -730,6 +748,9 @@
       const ok = validateAndStage(entry);
       if (!ok) return;
       answers[currentRef] = pendingValue;
+      // If this is a condition-picker (no own prefix, Health/Lifestyle, choice answer),
+      // capture the selected label(s) so un-prefixed follow-up questions inherit the badge.
+      maybeSetCondCtxFromAnswer(entry, pendingValue);
     } else if (entry.kind === 'page') {
       const ok = validatePage(entry);
       if (!ok) return;
@@ -855,6 +876,13 @@
   function stage() { return document.getElementById('stage'); }
 
   function renderEntry(entry) {
+    // Update condition context for eyebrow badge inheritance
+    if (entry.kind === 'section') {
+      _condCtx = null;                        // section boundary resets context
+    } else if (entry.title_prefix) {
+      _condCtx = entry.title_prefix;          // explicit prefix sets new context
+    }
+
     if (entry.kind === 'section' || entry.kind === 'composite_label') {
       renderSection(entry);
     } else if (entry.kind === 'display') {
@@ -1895,7 +1923,7 @@
   }
 
   function eyebrow(entry, label) {
-    let prefixText = entry.title_prefix || '';
+    let prefixText = entry.title_prefix || _condCtx || '';
     if (prefixText) prefixText = resolveTemplates(prefixText).replace(/\*+/g, '').trim();
     const prefix = prefixText
       ? `<span class="prefix-tag">${escapeHtml(prefixText)}</span> `
