@@ -336,7 +336,21 @@
   .duration-row label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
   .duration-row .input { max-width: 200px; }
 
-  /* Month/year picker */
+  /* Address widget */
+  .address-grid { display: grid; gap: 12px; margin-top: 4px; }
+  .address-row { display: grid; gap: 6px; }
+  .address-row label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
+  .postcode-row { display: flex; gap: 8px; align-items: flex-end; }
+  .postcode-row .input { max-width: 160px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .postcode-lookup-btn {
+    font-family: var(--sans); font-size: 14px; font-weight: 500;
+    padding: 13px 16px; background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius-md); cursor: pointer;
+    white-space: nowrap; transition: background .15s; flex-shrink: 0;
+  }
+  .postcode-lookup-btn:hover { background: var(--accent-ink); }
+  .postcode-lookup-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .postcode-hint { font-size: 12px; color: var(--ink-mute); margin-top: 4px; }
   .my-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 320px; margin-top: 4px; }
   .my-col { display: grid; gap: 6px; }
   .my-col label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
@@ -858,6 +872,13 @@
         return;
       }
       answers[currentRef] = pendingValue;
+    } else if (entry.kind === 'field' && entry.ui_hint === 'address') {
+      const val = answers[currentRef] || {};
+      if (entry.required && !val.line1 && !val.postcode) {
+        const e = document.getElementById('err');
+        if (e) { e.textContent = 'Please enter your address.'; e.classList.add('show'); }
+        return;
+      }
     } else if (entry.kind === 'field' && entry.ui_hint === 'monthyear') {
       const val = answers[currentRef] || {};
       if (entry.required && !val.year) {
@@ -1021,6 +1042,8 @@
       renderCustom(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'occupation_search') {
       renderOccupationSearch(entry);
+    } else if (entry.kind === 'field' && entry.ui_hint === 'address') {
+      renderAddress(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'duration') {
       renderDuration(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'monthyear') {
@@ -1766,6 +1789,106 @@
     mount(unit);
   }
 
+  // ── Address with postcode lookup ──────────────────────────────────────────
+  function renderAddress(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+
+    function mount() {
+      stage().innerHTML = `
+        <div class="card">
+          ${eyebrow(entry, entry.section_category || 'Personal & Occupation')}
+          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+          <div class="field address-grid">
+            <div class="address-row">
+              <label for="addr_pc">Postcode</label>
+              <div class="postcode-row">
+                <input class="input" id="addr_pc" type="text" inputmode="text" autocomplete="postal-code"
+                  placeholder="e.g. GL6 8PE" value="${escapeAttr(stored.postcode||'')}">
+                <button class="postcode-lookup-btn" id="pcLookupBtn" type="button">Find address</button>
+              </div>
+              <div class="postcode-hint" id="pcHint"></div>
+            </div>
+            <div class="address-row">
+              <label for="addr_l1">Address line 1</label>
+              <input class="input" id="addr_l1" type="text" autocomplete="address-line1"
+                placeholder="House number and street" value="${escapeAttr(stored.line1||'')}">
+            </div>
+            <div class="address-row">
+              <label for="addr_l2">Address line 2 <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
+              <input class="input" id="addr_l2" type="text" autocomplete="address-line2"
+                placeholder="" value="${escapeAttr(stored.line2||'')}">
+            </div>
+            <div class="address-row">
+              <label for="addr_town">Town / City</label>
+              <input class="input" id="addr_town" type="text" autocomplete="address-level2"
+                placeholder="" value="${escapeAttr(stored.town||'')}">
+            </div>
+            <div class="address-row">
+              <label for="addr_county">County <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
+              <input class="input" id="addr_county" type="text" autocomplete="address-level1"
+                placeholder="" value="${escapeAttr(stored.county||'')}">
+            </div>
+          </div>
+          <div class="error-msg" id="err"></div>
+          ${navActions(true, 'Continue')}
+        </div>`;
+
+      wireNav();
+
+      function save() {
+        answers[entry.ref] = {
+          postcode: document.getElementById('addr_pc')?.value.trim().toUpperCase() || '',
+          line1:    document.getElementById('addr_l1')?.value.trim() || '',
+          line2:    document.getElementById('addr_l2')?.value.trim() || '',
+          town:     document.getElementById('addr_town')?.value.trim() || '',
+          county:   document.getElementById('addr_county')?.value.trim() || '',
+        };
+      }
+
+      stage().querySelectorAll('input').forEach(i => i.addEventListener('input', save));
+      save();
+
+      // Postcode lookup via postcodes.io
+      const pcInput = document.getElementById('addr_pc');
+      const hint    = document.getElementById('pcHint');
+      const btn     = document.getElementById('pcLookupBtn');
+
+      async function lookup() {
+        const pc = pcInput.value.trim().replace(/\s+/g,'').toUpperCase();
+        if (!pc) { hint.textContent = 'Please enter a postcode first.'; return; }
+        btn.disabled = true; btn.textContent = 'Looking up…'; hint.textContent = '';
+        try {
+          const r = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(pc)}`);
+          const d = await r.json();
+          if (d.status !== 200 || !d.result) throw new Error('Postcode not found');
+          const res = d.result;
+          // Fill town and county from the result
+          const town   = res.admin_ward || res.parish || res.admin_district || '';
+          const county = res.admin_county || res.region || '';
+          const normPc = res.postcode || pc;
+          document.getElementById('addr_pc').value    = normPc;
+          document.getElementById('addr_town').value  = town;
+          document.getElementById('addr_county').value = county;
+          save();
+          hint.style.color = 'var(--accent-ink)';
+          hint.textContent = '✓ Postcode found — please fill in your street address above.';
+          document.getElementById('addr_l1').focus();
+        } catch (_) {
+          hint.style.color = 'var(--warn)';
+          hint.textContent = 'Postcode not found. Please check and try again, or fill in your address manually.';
+        } finally {
+          btn.disabled = false; btn.textContent = 'Find address';
+        }
+      }
+
+      btn.addEventListener('click', lookup);
+      pcInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); lookup(); } });
+      setTimeout(() => pcInput.focus({ preventScroll: false }), 60);
+    }
+
+    mount();
+  }
+
   function renderField(entry) {
     const ftype = entry.type;
     let inputHtml = '';
@@ -2155,6 +2278,12 @@
       return `<span class="review-a">${escapeHtml(txt)}</span>`;
     }
 
+    // Address
+    if (ui_hint === 'address' && a && typeof a === 'object') {
+      const parts = [a.line1, a.line2, a.town, a.county, a.postcode].filter(Boolean);
+      return `<span class="review-a">${escapeHtml(parts.join(', ') || '—')}</span>`;
+    }
+
     // Multiple choice / dropdown — show all options
     if ((type === 'multiple_choice' || type === 'dropdown') && choices && choices.length) {
       const selected = Array.isArray(a) ? a : (a ? [a] : []);
@@ -2237,6 +2366,9 @@
       if (a && typeof a === 'object' && a.unit === 'imperial' && 'feet' in a) return `${a.feet}ft ${a.inches}in`;
       if (a && typeof a === 'object' && a.unit === 'metric' && 'kg' in a) return `${a.kg} kg`;
       if (a && typeof a === 'object' && a.unit === 'imperial' && 'stone' in a) return `${a.stone} st ${a.pounds} lb`;
+      if (a && typeof a === 'object' && ('line1' in a || 'postcode' in a)) {
+        return [a.line1, a.line2, a.town, a.county, a.postcode].filter(Boolean).join(', ') || '—';
+      }
       if (Array.isArray(a)) return a.map(x => (schema.choice_index[x] && schema.choice_index[x].label) || x).join(', ');
       if (typeof a === 'string' && schema.choice_index[a]) return schema.choice_index[a].label;
       if (typeof a === 'object' && a !== null) {
@@ -2301,16 +2433,49 @@
         throw new Error(data.message || 'Submit failed (' + r.status + ')');
       }
       clearState();
+
+      // Build a mailto: link so the client can send themselves a copy
+      const copyMailto = buildCopyMailto(summary, clientName, clientEmail);
+
       stage().innerHTML = `
         <div class="center">
           <h2>Thank you.</h2>
           <p>Your fact find has been received. Your adviser will be in touch shortly.</p>
+          <a href="${escapeAttr(copyMailto)}" class="btn primary" style="display:inline-flex;margin-top:8px;text-decoration:none">
+            Send yourself a copy
+          </a>
         </div>`;
     } catch (err) {
       btns.forEach(b => { b.disabled = false; b.textContent = 'Submit fact find →'; });
       errEl.textContent = 'There was a problem submitting your answers. Please try again or contact your adviser. (' + err.message + ')';
       errEl.classList.add('show');
     }
+  }
+
+  function buildCopyMailto(summary, clientName, clientEmail) {
+    const subject = encodeURIComponent('Your Baker Hudson Health fact find — a copy of your answers');
+    const intro = [
+      clientName ? `Hi ${clientName},` : 'Hi,',
+      '',
+      'Here is a copy of the answers you submitted to Baker Hudson Health.',
+      'Please keep this for your records.',
+      '',
+      '─'.repeat(40),
+      '',
+    ].join('\n');
+    const footer = [
+      '',
+      '─'.repeat(40),
+      '',
+      'Baker Hudson Health',
+      'Cirencester Road, Stroud, GL6 8PE',
+      '01453 297100',
+    ].join('\n');
+    // mailto: body length is limited — truncate if needed to avoid broken links
+    let body = intro + summary + footer;
+    if (body.length > 8000) body = intro + summary.slice(0, 7500) + '\n\n[…answers truncated — full copy sent to your adviser]' + footer;
+    const to = clientEmail ? encodeURIComponent(clientEmail) : '';
+    return `mailto:${to}?subject=${subject}&body=${encodeURIComponent(body)}`;
   }
 
   function extractField(key) {
