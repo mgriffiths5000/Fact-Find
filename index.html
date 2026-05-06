@@ -308,7 +308,11 @@
   }
   .progress-segment {
     flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 3px;
+    cursor: pointer;
+    transition: opacity .15s;
   }
+  .progress-segment:hover { opacity: 0.75; }
+  .progress-segment.future { cursor: default; opacity: 0.5; }
   .progress-segment-label {
     font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--ink-mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -483,7 +487,24 @@
     font-size: 22px;
     margin: 0 0 16px;
     letter-spacing: -0.01em;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
   }
+  .review-section h3 .edit-btn {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid #cfdcd2;
+    border-radius: 99px;
+    padding: 3px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: background .15s;
+  }
+  .review-section h3 .edit-btn:hover { background: #d3e4d8; }
   .review-row {
     display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
     padding: 10px 0;
@@ -783,6 +804,12 @@
       stage().querySelectorAll('[data-pct]').forEach(inp => { total += Number(inp.value) || 0; });
       if (total !== 100) return fail(`Percentages must add up to 100% (currently ${total}%). Please adjust.`);
     }
+    if (entry.custom_type === 'dependents') {
+      const val = answers[entry.ref];
+      if (!val || (!val.none && (!val.dependents || val.dependents.length === 0))) {
+        return fail('Please add at least one dependent, or tick "No financial dependents".');
+      }
+    }
     return true;
   }
 
@@ -901,7 +928,7 @@
   }
 
   function renderSection(entry) {
-    const eyebrowLabel = entry.section_category || 'Occupation';
+    const eyebrowLabel = entry.section_category || 'Personal & Occupation';
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, eyebrowLabel)}
@@ -1572,9 +1599,9 @@
   function finish() {
     setProgress(null);
     const groups = buildReviewGroups();
-    const sections = groups.map(g => `
+    const sections = groups.map((g, gi) => `
       <div class="review-section">
-        <h3>${escapeHtml(g.title)}</h3>
+        <h3>${escapeHtml(g.title)}<button class="edit-btn" data-gi="${gi}">Edit</button></h3>
         ${g.rows.length === 0
           ? '<p style="color:var(--ink-mute);font-size:14px">No answers in this section.</p>'
           : g.rows.map(r => `
@@ -1612,6 +1639,43 @@
     document.getElementById('backBtnMob')?.addEventListener('click', back);
     document.getElementById('submitBtnDesk')?.addEventListener('click', onSubmit);
     document.getElementById('submitBtnMob')?.addEventListener('click', onSubmit);
+
+    // Edit buttons — jump to the first answerable entry in that review section
+    stage().querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const gi = Number(btn.dataset.gi);
+        const group = groups[gi];
+        if (!group) return;
+        // Find the first schema entry whose ref is in this group
+        const rowRefs = new Set((group.rows || []).map(r => r.ref).filter(Boolean));
+        // Also check page subfields
+        for (const e of schema.order) {
+          if (rowRefs.has(e.ref)) {
+            history.push(currentRef);
+            goTo(e.ref);
+            return;
+          }
+          if (e.kind === 'page' || e.kind === 'custom') {
+            // If any subfield ref is in rowRefs, navigate to the page
+            const subRefs = (e.subfields || []).map(s => s.ref);
+            if (subRefs.some(r => rowRefs.has(r))) {
+              history.push(currentRef);
+              goTo(e.ref);
+              return;
+            }
+          }
+        }
+        // Fallback: navigate to first entry with matching section title
+        for (const e of schema.order) {
+          const scat = e.section_category || '';
+          if (scat.toLowerCase() === (group.title || '').toLowerCase()) {
+            history.push(currentRef);
+            goTo(e.ref);
+            return;
+          }
+        }
+      });
+    });
   }
 
   function buildReviewGroups() {
@@ -1908,7 +1972,7 @@
   let _progressSections = null;
   function getProgressSections() {
     if (_progressSections) return _progressSections;
-    const CATEGORY_ORDER = ['Occupation', 'Finances', 'Lifestyle', 'Health'];
+    const CATEGORY_ORDER = ['Personal & Occupation', 'Finances', 'Lifestyle', 'Health'];
     const cats = new Map();
     for (const e of schema.order) {
       const cat = e.section_category || 'Health';
@@ -1959,11 +2023,32 @@
       const pct = total > 0 ? Math.round(seen / total * 100) : 0;
       const isDone = pct >= 100;
       const isActive = s.label === currentCat;
-      return `<div class="progress-segment ${isDone ? 'done' : isActive ? 'active' : ''}">
-        <div class="progress-segment-label" title="${s.label}">${s.label}</div>
+      const isFuture = !isDone && !isActive && seen === 0;
+      // Only clickable if the section has been started or completed
+      const clickable = !isFuture && s.refs.length > 0;
+      return `<div class="progress-segment ${isDone ? 'done' : isActive ? 'active' : ''} ${isFuture ? 'future' : ''}"
+        ${clickable ? `data-cat="${s.label}" role="button" tabindex="0" title="Jump to ${s.label}"` : ''}>
+        <div class="progress-segment-label">${s.label}</div>
         <div class="progress-segment-bar"><div class="progress-segment-fill" style="width:${pct}%"></div></div>
       </div>`;
     }).join('');
+
+    // Wire click handlers
+    container.querySelectorAll('[data-cat]').forEach(el => {
+      el.addEventListener('click', () => jumpToCategory(el.dataset.cat));
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') jumpToCategory(el.dataset.cat); });
+    });
+  }
+
+  function jumpToCategory(cat) {
+    // Navigate to the first entry in this category that appears in the schema order
+    for (const e of schema.order) {
+      if (e.section_category === cat && orderById.has(e.ref)) {
+        if (currentRef) history.push(currentRef);
+        goTo(e.ref);
+        return;
+      }
+    }
   }
 
   function onGlobalKey(e) {

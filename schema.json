@@ -84,7 +84,7 @@
           "properties": {}
         }
       ],
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -100,7 +100,7 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "page",
@@ -135,7 +135,7 @@
           "properties": {}
         }
       ],
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -153,7 +153,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -169,7 +169,7 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -188,7 +188,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -250,7 +250,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -268,7 +268,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -286,7 +286,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -302,7 +302,7 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -320,7 +320,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -338,7 +338,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -354,7 +354,7 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -370,7 +370,7 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -386,7 +386,7 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -433,7 +433,7 @@
       },
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "section",
@@ -443,7 +443,7 @@
       "description": "",
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -495,7 +495,7 @@
       },
       "part": 1,
       "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -532,7 +532,7 @@
       },
       "part": 1,
       "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -550,7 +550,7 @@
       },
       "part": 1,
       "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "field",
@@ -10976,7 +10976,7 @@
       },
       "part": 1,
       "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Occupation",
+      "section_category": "Personal & Occupation",
       "ui_hint": "occupation_search"
     },
     {
@@ -10993,7 +10993,7 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Occupation"
+      "section_category": "Personal & Occupation"
     },
     {
       "kind": "custom",
@@ -26775,7 +26775,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
@@ -29380,7 +29380,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
@@ -29467,7 +29467,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
@@ -35622,7 +35622,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
@@ -35696,7 +35696,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
@@ -41141,7 +41141,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
@@ -41194,7 +41194,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
@@ -41252,7 +41252,7 @@
       "description": "",
       "type": "multiple_choice",
       "required": true,
-      "allow_multiple_selection": false,
+      "allow_multiple_selection": true,
       "allow_other_choice": false,
       "choices": [
         {
