@@ -2227,6 +2227,7 @@
         const mn = a.month ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][Number(a.month)-1] : '';
         return [mn, a.year].filter(Boolean).join(' ') || '—';
       }
+      if (a && typeof a === 'object' && ('years' in a || 'months' in a)) {
         const parts = [];
         if (a.years)  parts.push(`${a.years} year${a.years == 1 ? '' : 's'}`);
         if (a.months) parts.push(`${a.months} month${a.months == 1 ? '' : 's'}`);
