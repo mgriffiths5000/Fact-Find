@@ -513,6 +513,16 @@
   .review-choice-marker svg { display: none; }
   .review-choice.chosen .review-choice-marker svg { display: block; }
 
+  /* Ensure all question content is left-aligned */
+  .card, .card *, .stage, .stage * {
+    text-align: left;
+  }
+  /* Exceptions: checkbox markers, spinner, and thank-you screen stay centred */
+  .review-choice-marker, .dep-no-box, .mortgage-check-box, .sick-check,
+  .spinner, .center, .center * {
+    text-align: center;
+  }
+
   /* End / loading */
   .center {
     text-align: center; max-width: 480px;
@@ -863,7 +873,7 @@
   }
 
   function renderSection(entry) {
-    const eyebrowLabel = `Section · Part ${entry.part}`;
+    const eyebrowLabel = entry.section_category || 'Occupation';
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, eyebrowLabel)}
@@ -877,7 +887,7 @@
   function renderDisplay(entry) {
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Note · Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         ${navActions(false, 'Continue')}
@@ -893,7 +903,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="subfields">${subfieldHtml}</div>
@@ -998,7 +1008,7 @@
     const storedLabel = stored && schema.choice_index[stored] ? schema.choice_index[stored].label : stored;
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field occ-search-wrap">
@@ -1094,7 +1104,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         <p class="q-desc">Select all that apply.</p>
         <div class="sick-options">${optHtml}</div>
@@ -1156,7 +1166,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         <p class="q-desc">Enter the approximate percentage for each category. The total must add up to 100%.</p>
         <div class="work-type-grid">${rowsHtml}</div>
@@ -1208,7 +1218,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">Mortgage Details</h1>
         <p class="q-desc">Fill in as many details as you can.</p>
         <div class="mortgage-grid">
@@ -1345,7 +1355,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">${formatTitle(entry.title)}</h1>
         <p class="q-desc">Add everyone who relies on your income — children, a partner, or anyone else financially dependent on you.</p>
         <div class="dependents-list" id="depList"></div>
@@ -1428,7 +1438,7 @@
 
     stage().innerHTML = `
       <div class="card">
-        ${eyebrow(entry, 'Part ' + entry.part)}
+        ${eyebrow(entry, entry.section_category || 'Health')}
         <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field">${inputHtml}</div>
@@ -1885,8 +1895,10 @@
   }
 
   function eyebrow(entry, label) {
-    const prefix = entry.title_prefix
-      ? `<span class="prefix-tag">${escapeHtml(entry.title_prefix)}</span> `
+    let prefixText = entry.title_prefix || '';
+    if (prefixText) prefixText = resolveTemplates(prefixText).replace(/\*+/g, '').trim();
+    const prefix = prefixText
+      ? `<span class="prefix-tag">${escapeHtml(prefixText)}</span> `
       : '';
     return `<span class="eyebrow"><span class="dot"></span>${prefix}${escapeHtml(label)}</span>`;
   }
@@ -1907,10 +1919,10 @@
     if (currentIdx >= 0) {
       for (let i = 0; i <= currentIdx; i++) {
         const e = schema.order[i];
-        const cat = e.section_category || 'Medical History';
+        const cat = e.section_category || 'Health';
         if (catSeenCount.has(cat)) catSeenCount.set(cat, catSeenCount.get(cat) + 1);
       }
-      currentCat = schema.order[currentIdx]?.section_category || 'Medical History';
+      currentCat = schema.order[currentIdx]?.section_category || 'Health';
     }
 
     container.innerHTML = segs.map(s => {
