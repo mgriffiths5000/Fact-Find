@@ -1733,85 +1733,64 @@
     const clientName = (extractField('first_name') + ' ' + extractField('last_name')).trim();
     const clientEmail = extractField('email');
 
-    // Build an HTML email that mirrors exactly what the client sees on the summary screen.
-    // Each answer shows the full option list with the selection(s) marked, just like the UI.
-    function emailAnswer(r) {
+    // Build plain text that mirrors the summary screen.
+    // Selected options marked ✓, unselected marked ·
+    function plainAnswer(r) {
       const { a, type, choices, ui_hint } = r;
-      // Occupation search — just show the selected label
+
       if (ui_hint === 'occupation_search') {
-        return `<span style="color:#1c2229">${emailResolveAnswer(a)}</span>`;
+        return plainResolve(a);
       }
-      // Yes/No — show both options, mark selection
       if (type === 'yes_no') {
-        return ['Yes','No'].map(opt => {
-          const chosen = (opt === 'Yes' && a === true) || (opt === 'No' && a === false);
-          return `<div style="display:flex;align-items:center;gap:8px;margin:3px 0">
-            <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;border:1.5px solid ${chosen ? '#2f4f3c' : '#d4ccbe'};background:${chosen ? '#2f4f3c' : 'transparent'};flex-shrink:0">
-              ${chosen ? '<span style="color:#fff;font-size:10px;line-height:1">✓</span>' : ''}
-            </span>
-            <span style="font-size:13px;color:${chosen ? '#1c2229' : '#8b929b'};font-weight:${chosen ? '500' : '400'}">${opt}</span>
-          </div>`;
-        }).join('');
+        const lines = [];
+        lines.push((a === true  ? '  ✓ Yes' : '  · Yes'));
+        lines.push((a === false ? '  ✓ No'  : '  · No'));
+        return lines.join('\n');
       }
-      // Multiple choice / dropdown — show all options with selections marked
       if ((type === 'multiple_choice' || type === 'dropdown') && choices && choices.length) {
         const selected = Array.isArray(a) ? a : (a ? [a] : []);
-        return choices.map(c => {
-          const chosen = selected.includes(c.ref);
-          return `<div style="display:flex;align-items:center;gap:8px;margin:3px 0">
-            <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;border:1.5px solid ${chosen ? '#2f4f3c' : '#d4ccbe'};background:${chosen ? '#2f4f3c' : 'transparent'};flex-shrink:0">
-              ${chosen ? '<span style="color:#fff;font-size:10px;line-height:1">✓</span>' : ''}
-            </span>
-            <span style="font-size:13px;color:${chosen ? '#1c2229' : '#8b929b'};font-weight:${chosen ? '500' : '400'}">${escapeHtml(c.label)}</span>
-          </div>`;
-        }).join('');
+        return choices.map(c => (selected.includes(c.ref) ? '  ✓ ' : '  · ') + c.label).join('\n');
       }
-      // Free text, numbers, dates
-      return `<span style="color:#1c2229;font-size:14px">${escapeHtml(emailResolveAnswer(a))}</span>`;
+      return '  ' + plainResolve(a);
     }
 
-    function emailResolveAnswer(a) {
+    function plainResolve(a) {
       if (a === true) return 'Yes';
       if (a === false) return 'No';
       if (Array.isArray(a)) return a.map(x => (schema.choice_index[x] && schema.choice_index[x].label) || x).join(', ');
       if (typeof a === 'string' && schema.choice_index[a]) return schema.choice_index[a].label;
       if (typeof a === 'object' && a !== null) {
-        // Custom types — flatten to readable text
+        // Custom types (sick pay, mortgage, dependents, work type)
         const parts = [];
         for (const [k, v] of Object.entries(a)) {
-          if (v && v !== false && k !== 'dependents') parts.push(k.replace(/_/g,' ') + ': ' + v);
+          if (v && v !== false && k !== 'dependents' && k !== 'none') {
+            parts.push(k.replace(/_/g,' ') + ': ' + v);
+          }
         }
+        if (a.none) parts.push('None');
         if (a.dependents) a.dependents.forEach((d,i) => parts.push('Dependent ' + (i+1) + ': ' + [d.name,d.dob,d.rel].filter(Boolean).join(', ')));
-        return parts.join(' · ') || '—';
+        return parts.join(', ') || '—';
       }
       return String(a ?? '');
     }
 
-    const sectionsHtml = groups.map(g => `
-      <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e6e1d8">
-        <h3 style="font-family:Georgia,serif;font-size:16px;font-weight:500;color:#213a2c;margin:0 0 12px;letter-spacing:-0.01em">${escapeHtml(g.title)}</h3>
-        <table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse">
-          ${g.rows.map(r => `
-            <tr>
-              <td style="padding:8px 12px 8px 0;width:42%;vertical-align:top;color:#5b6471;font-size:13px;border-bottom:1px solid #f0ece5">${escapeHtml(r.q)}</td>
-              <td style="padding:8px 0 8px 12px;vertical-align:top;border-bottom:1px solid #f0ece5">${emailAnswer(r)}</td>
-            </tr>`).join('')}
-        </table>
-      </div>`).join('');
+    const lines = [];
+    lines.push('PROTECTION FACT FIND — BAKER HUDSON HEALTH');
+    lines.push('Client: ' + (clientName || '—'));
+    if (clientEmail) lines.push('Email:  ' + clientEmail);
+    lines.push('Date:   ' + new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'}));
 
-    const htmlEmail = `
-      <div style="background:#f6f3ee;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-        <div style="max-width:680px;margin:0 auto;background:#fff;border:1px solid #e6e1d8;border-radius:12px;padding:28px 32px">
-          <div style="font-family:Georgia,serif;font-size:22px;color:#1c2229;margin:0 0 4px">Protection Fact Find</div>
-          <div style="color:#8b929b;font-size:13px;margin:0 0 4px">Baker Hudson Health</div>
-          <div style="color:#5b6471;font-size:13px;margin:0 0 20px">
-            ${clientName ? `<strong>${escapeHtml(clientName)}</strong>` : 'Client'}
-            ${clientEmail ? ` · ${escapeHtml(clientEmail)}` : ''}
-            · ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})}
-          </div>
-          ${sectionsHtml}
-        </div>
-      </div>`;
+    for (const g of groups) {
+      lines.push('');
+      lines.push('━━━ ' + g.title.toUpperCase() + ' ━━━');
+      for (const r of g.rows) {
+        lines.push('');
+        lines.push(r.q);
+        lines.push(plainAnswer(r));
+      }
+    }
+
+    const summary = lines.join('\n');
 
     if (!WEB3FORMS_KEY) {
       stage().innerHTML = `
@@ -1819,7 +1798,7 @@
           <span class="eyebrow"><span class="dot"></span>Preview mode</span>
           <h1 class="q-title">Submission ready</h1>
           <p class="q-desc">No Web3Forms key is set in <code>config.js</code>.</p>
-          <div style="border:1px solid var(--line-strong);border-radius:10px;overflow:auto;max-height:60vh">${htmlEmail}</div>
+          <pre style="background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:16px;overflow:auto;max-height:60vh;font-size:13px;white-space:pre-wrap">${escapeHtml(summary)}</pre>
         </div>`;
       return;
     }
@@ -1833,7 +1812,7 @@
           subject: 'New fact find — ' + (clientName || 'Client'),
           name: clientName || 'Client',
           email: clientEmail || 'noreply@bakerhudsonhealth.com',
-          message: htmlEmail,
+          message: summary,
           botcheck: '',
         }),
       });
