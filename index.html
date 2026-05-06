@@ -2003,7 +2003,11 @@
     if (!s) return '';
     let t = resolveTemplates(s);
     t = escapeHtml(t);
-    t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, txt, url) => `<a href="${url}" target="_blank" rel="noopener">${txt}</a>`);
+    t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, txt, url) => {
+      const isPdf = url.toLowerCase().endsWith('.pdf');
+      const extra = isPdf ? ' download' : '';
+      return `<a href="${url}" target="_blank" rel="noopener"${extra}>${txt}</a>`;
+    });
     t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
     return t;

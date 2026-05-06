@@ -90,7 +90,7 @@
       "kind": "field",
       "ref": "3d5353ad-085d-40d7-a8cc-a4882515d021",
       "id": "M6tnHVGT10b2",
-      "title": "Please click yes below to indicate that you have read and are happy with our [Privacy Notice](https://bhhealth-my.sharepoint.com/:b:/g/personal/m_griffiths_bakerhudsonhealth_com/EZgEu7lOMxpIhhdt5PwwtK8BU8fn5uFsMZkmp9B2u0da3g?e=gdDPjw)",
+      "title": "Please click yes below to indicate that you have read and are happy with our [Privacy Notice](BHH_Privacy_Notice.pdf)",
       "description": "",
       "type": "yes_no",
       "required": true,
