@@ -330,12 +330,32 @@
   .progress-segment.active .progress-segment-label { color: var(--ink-soft); }
 
   /* ========== Custom field types ========== */
-  /* Occupation search */
+  /* Duration input (years + months stacked) */
+  .duration-grid { display: grid; gap: 10px; max-width: 260px; }
+  .duration-row { display: grid; gap: 6px; }
+  .duration-row label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
+  .duration-row .input { max-width: 200px; }
+
+  /* Unit toggle (Imperial / Metric) */
+  .unit-toggle {
+    display: inline-flex; border: 1px solid var(--line-strong); border-radius: 99px; overflow: hidden;
+    margin-bottom: 18px; background: var(--bg-card); box-shadow: var(--shadow-sm);
+  }
+  .unit-toggle button {
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    padding: 7px 18px; border: none; background: transparent; cursor: pointer;
+    color: var(--ink-mute); transition: background .15s, color .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .unit-toggle button.active { background: var(--accent); color: #fff; }
+  .unit-inputs { display: grid; gap: 10px; max-width: 280px; }
+  .unit-row { display: grid; gap: 6px; }
+  .unit-row label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
   .occ-search-wrap { position: relative; }
   .occ-dropdown {
-    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 20;
+    position: fixed; z-index: 50;
     background: #fff; border: 1px solid var(--accent); border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lg); max-height: 260px; overflow-y: auto;
+    box-shadow: var(--shadow-lg); overflow-y: auto;
   }
   .occ-option {
     padding: 10px 16px; font-size: 15px; cursor: pointer; color: var(--ink);
@@ -785,6 +805,26 @@
         return;
       }
       answers[currentRef] = pendingValue;
+    } else if (entry.kind === 'field' && entry.ui_hint === 'duration') {
+      const val = answers[currentRef] || {};
+      if (entry.required && !val.years && !val.months) {
+        const e = document.getElementById('err');
+        if (e) { e.textContent = 'Please enter a duration.'; e.classList.add('show'); }
+        return;
+      }
+    } else if (entry.kind === 'field' && (entry.ui_hint === 'height' || entry.ui_hint === 'weight')) {
+      const val = answers[currentRef] || {};
+      if (entry.required) {
+        const empty = entry.ui_hint === 'height'
+          ? (val.unit === 'metric' ? !val.cm : (!val.feet && !val.inches))
+          : (val.unit === 'metric' ? !val.kg : (!val.stone && !val.pounds));
+        if (empty) {
+          const e = document.getElementById('err');
+          if (e) { e.textContent = 'Please enter a value.'; e.classList.add('show'); }
+          return;
+        }
+      }
+      // already committed in save() callback
     }
     saveState();
     const target = resolveJump(entry);
@@ -920,6 +960,12 @@
       renderCustom(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'occupation_search') {
       renderOccupationSearch(entry);
+    } else if (entry.kind === 'field' && entry.ui_hint === 'duration') {
+      renderDuration(entry);
+    } else if (entry.kind === 'field' && entry.ui_hint === 'height') {
+      renderHeight(entry);
+    } else if (entry.kind === 'field' && entry.ui_hint === 'weight') {
+      renderWeight(entry);
     } else if (entry.kind === 'field') {
       renderField(entry);
     } else {
@@ -1083,6 +1129,27 @@
     let focusedIdx = -1;
     const choices = entry.choices || [];
 
+    function positionDrop() {
+      const rect = inp.getBoundingClientRect();
+      const viewH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      const spaceBelow = viewH - rect.bottom - 8;
+      const spaceAbove = rect.top - 8;
+      const maxH = 220;
+      if (spaceBelow >= 120 || spaceBelow >= spaceAbove) {
+        // Position below
+        drop.style.top    = (rect.bottom + 4) + 'px';
+        drop.style.bottom = '';
+        drop.style.maxHeight = Math.min(maxH, spaceBelow) + 'px';
+      } else {
+        // Position above
+        drop.style.bottom = (viewH - rect.top + 4) + 'px';
+        drop.style.top    = '';
+        drop.style.maxHeight = Math.min(maxH, spaceAbove) + 'px';
+      }
+      drop.style.left  = rect.left + 'px';
+      drop.style.width = rect.width + 'px';
+    }
+
     function render(q) {
       const lower = q.toLowerCase();
       const matches = q.length < 2 ? [] : choices.filter(c => c.label.toLowerCase().includes(lower)).slice(0, 40);
@@ -1092,6 +1159,7 @@
         return `<div class="occ-option" data-ref="${escapeAttr(c.ref)}" data-idx="${i}">${hi}</div>`;
       }).join('');
       drop.style.display = 'block';
+      positionDrop();
       focusedIdx = -1;
       drop.querySelectorAll('.occ-option').forEach(opt => {
         opt.addEventListener('mousedown', e => {
@@ -1116,6 +1184,13 @@
       else if (e.key === 'Enter' && focusedIdx >= 0 && opts[focusedIdx]) { e.preventDefault(); select(opts[focusedIdx].dataset.ref, opts[focusedIdx].textContent); }
     });
     inp.addEventListener('blur', () => setTimeout(() => { drop.style.display = 'none'; }, 150));
+
+    // Reposition when the on-screen keyboard resizes the viewport
+    const vv = window.visualViewport;
+    function onViewport() { if (drop.style.display !== 'none') positionDrop(); }
+    if (vv) { vv.addEventListener('resize', onViewport); vv.addEventListener('scroll', onViewport); }
+    window.addEventListener('resize', onViewport);
+
     setTimeout(() => inp.focus(), 60);
   }
 
@@ -1437,6 +1512,146 @@
       wireNav();
       document.getElementById('noDepChk')?.addEventListener('click', arguments.callee);
     });
+  }
+
+  // ── Duration input (years + months stacked) ──────────────────────────────────
+  function renderDuration(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref])
+      ? answers[entry.ref] : {};
+    const years  = stored.years  !== undefined ? stored.years  : '';
+    const months = stored.months !== undefined ? stored.months : '';
+
+    stage().innerHTML = `
+      <div class="card">
+        ${eyebrow(entry, entry.section_category || 'Health')}
+        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+        ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
+        <div class="field duration-grid">
+          <div class="duration-row">
+            <label for="dur_years">Years</label>
+            <input class="input" id="dur_years" type="number" min="0" max="99" inputmode="numeric" placeholder="0" value="${escapeAttr(years)}" />
+          </div>
+          <div class="duration-row">
+            <label for="dur_months">Months</label>
+            <input class="input" id="dur_months" type="number" min="0" max="11" inputmode="numeric" placeholder="0" value="${escapeAttr(months)}" />
+          </div>
+        </div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+
+    wireNav();
+
+    function save() {
+      answers[entry.ref] = {
+        years:  document.getElementById('dur_years')?.value  ?? '',
+        months: document.getElementById('dur_months')?.value ?? '',
+      };
+    }
+
+    document.getElementById('dur_years')?.addEventListener('input', save);
+    document.getElementById('dur_months')?.addEventListener('input', save);
+    save();
+
+    setTimeout(() => document.getElementById('dur_years')?.focus({ preventScroll: false }), 60);
+  }
+
+  // ── Height (imperial ft/in or metric cm) ──────────────────────────────────
+  function renderHeight(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+    const unit = stored.unit || 'imperial';
+
+    function html(u) {
+      if (u === 'imperial') return `
+        <div class="unit-inputs">
+          <div class="unit-row"><label for="h_ft">Feet</label>
+            <input class="input" id="h_ft" type="number" min="0" max="9" inputmode="numeric" placeholder="5" value="${escapeAttr(stored.feet||'')}"></div>
+          <div class="unit-row"><label for="h_in">Inches</label>
+            <input class="input" id="h_in" type="number" min="0" max="11" inputmode="numeric" placeholder="10" value="${escapeAttr(stored.inches||'')}"></div>
+        </div>`;
+      return `
+        <div class="unit-inputs">
+          <div class="unit-row"><label for="h_cm">Centimetres</label>
+            <input class="input" id="h_cm" type="number" min="0" max="300" inputmode="decimal" placeholder="178" value="${escapeAttr(stored.cm||'')}"></div>
+        </div>`;
+    }
+
+    function mount(u) {
+      stage().innerHTML = `
+        <div class="card">
+          ${eyebrow(entry, entry.section_category || 'Health')}
+          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+          <div class="unit-toggle">
+            <button id="ut_imp" class="${u==='imperial'?'active':''}">Imperial</button>
+            <button id="ut_met" class="${u==='metric'?'active':''}">Metric</button>
+          </div>
+          <div class="field">${html(u)}</div>
+          <div class="error-msg" id="err"></div>
+          ${navActions(true, 'Continue')}
+        </div>`;
+      wireNav();
+      function save() {
+        const v = {unit: u};
+        if (u === 'imperial') { v.feet = document.getElementById('h_ft')?.value||''; v.inches = document.getElementById('h_in')?.value||''; }
+        else { v.cm = document.getElementById('h_cm')?.value||''; }
+        answers[entry.ref] = v;
+      }
+      stage().querySelectorAll('input').forEach(i => i.addEventListener('input', save));
+      save();
+      document.getElementById('ut_imp').addEventListener('click', () => { answers[entry.ref] = {unit:'imperial'}; mount('imperial'); });
+      document.getElementById('ut_met').addEventListener('click', () => { answers[entry.ref] = {unit:'metric'}; mount('metric'); });
+      setTimeout(() => stage().querySelector('input')?.focus({ preventScroll: false }), 60);
+    }
+    mount(unit);
+  }
+
+  // ── Weight (imperial st/lb or metric kg) ──────────────────────────────────
+  function renderWeight(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+    const unit = stored.unit || 'imperial';
+
+    function html(u) {
+      if (u === 'imperial') return `
+        <div class="unit-inputs">
+          <div class="unit-row"><label for="w_st">Stone</label>
+            <input class="input" id="w_st" type="number" min="0" max="99" inputmode="numeric" placeholder="12" value="${escapeAttr(stored.stone||'')}"></div>
+          <div class="unit-row"><label for="w_lb">Pounds</label>
+            <input class="input" id="w_lb" type="number" min="0" max="13" inputmode="numeric" placeholder="7" value="${escapeAttr(stored.pounds||'')}"></div>
+        </div>`;
+      return `
+        <div class="unit-inputs">
+          <div class="unit-row"><label for="w_kg">Kilograms</label>
+            <input class="input" id="w_kg" type="number" min="0" max="500" inputmode="decimal" placeholder="80" value="${escapeAttr(stored.kg||'')}"></div>
+        </div>`;
+    }
+
+    function mount(u) {
+      stage().innerHTML = `
+        <div class="card">
+          ${eyebrow(entry, entry.section_category || 'Health')}
+          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+          <div class="unit-toggle">
+            <button id="ut_imp" class="${u==='imperial'?'active':''}">Imperial</button>
+            <button id="ut_met" class="${u==='metric'?'active':''}">Metric</button>
+          </div>
+          <div class="field">${html(u)}</div>
+          <div class="error-msg" id="err"></div>
+          ${navActions(true, 'Continue')}
+        </div>`;
+      wireNav();
+      function save() {
+        const v = {unit: u};
+        if (u === 'imperial') { v.stone = document.getElementById('w_st')?.value||''; v.pounds = document.getElementById('w_lb')?.value||''; }
+        else { v.kg = document.getElementById('w_kg')?.value||''; }
+        answers[entry.ref] = v;
+      }
+      stage().querySelectorAll('input').forEach(i => i.addEventListener('input', save));
+      save();
+      document.getElementById('ut_imp').addEventListener('click', () => { answers[entry.ref] = {unit:'imperial'}; mount('imperial'); });
+      document.getElementById('ut_met').addEventListener('click', () => { answers[entry.ref] = {unit:'metric'}; mount('metric'); });
+      setTimeout(() => stage().querySelector('input')?.focus({ preventScroll: false }), 60);
+    }
+    mount(unit);
   }
 
   function renderField(entry) {
@@ -1791,6 +2006,33 @@
       return `<span class="review-a">${formatAnswer(a)}</span>`;
     }
 
+    // Duration — show "X years, Y months"
+    if (ui_hint === 'duration') {
+      if (a && typeof a === 'object') {
+        const parts = [];
+        if (a.years)  parts.push(`${a.years} year${a.years == 1 ? '' : 's'}`);
+        if (a.months) parts.push(`${a.months} month${a.months == 1 ? '' : 's'}`);
+        return `<span class="review-a">${escapeHtml(parts.join(', ') || '—')}</span>`;
+      }
+      return `<span class="review-a">${formatAnswer(a)}</span>`;
+    }
+
+    // Height
+    if (ui_hint === 'height' && a && typeof a === 'object') {
+      const txt = a.unit === 'metric'
+        ? `${a.cm || '—'} cm`
+        : `${a.feet || '0'}ft ${a.inches || '0'}in`;
+      return `<span class="review-a">${escapeHtml(txt)}</span>`;
+    }
+
+    // Weight
+    if (ui_hint === 'weight' && a && typeof a === 'object') {
+      const txt = a.unit === 'metric'
+        ? `${a.kg || '—'} kg`
+        : `${a.stone || '0'} st ${a.pounds || '0'} lb`;
+      return `<span class="review-a">${escapeHtml(txt)}</span>`;
+    }
+
     // Multiple choice / dropdown — show all options
     if ((type === 'multiple_choice' || type === 'dropdown') && choices && choices.length) {
       const selected = Array.isArray(a) ? a : (a ? [a] : []);
@@ -1859,6 +2101,16 @@
     function plainResolve(a) {
       if (a === true) return 'Yes';
       if (a === false) return 'No';
+      if (a && typeof a === 'object' && ('years' in a || 'months' in a)) {
+        const parts = [];
+        if (a.years)  parts.push(`${a.years} year${a.years == 1 ? '' : 's'}`);
+        if (a.months) parts.push(`${a.months} month${a.months == 1 ? '' : 's'}`);
+        return parts.join(', ') || '—';
+      }
+      if (a && typeof a === 'object' && a.unit === 'metric' && 'cm' in a) return `${a.cm} cm`;
+      if (a && typeof a === 'object' && a.unit === 'imperial' && 'feet' in a) return `${a.feet}ft ${a.inches}in`;
+      if (a && typeof a === 'object' && a.unit === 'metric' && 'kg' in a) return `${a.kg} kg`;
+      if (a && typeof a === 'object' && a.unit === 'imperial' && 'stone' in a) return `${a.stone} st ${a.pounds} lb`;
       if (Array.isArray(a)) return a.map(x => (schema.choice_index[x] && schema.choice_index[x].label) || x).join(', ');
       if (typeof a === 'string' && schema.choice_index[a]) return schema.choice_index[a].label;
       if (typeof a === 'object' && a !== null) {

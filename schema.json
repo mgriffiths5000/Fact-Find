@@ -169,7 +169,8 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Personal & Occupation"
+      "section_category": "Personal & Occupation",
+      "ui_hint": "duration"
     },
     {
       "kind": "field",
@@ -10993,7 +10994,8 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
-      "section_category": "Personal & Occupation"
+      "section_category": "Personal & Occupation",
+      "ui_hint": "duration"
     },
     {
       "kind": "custom",
@@ -11083,7 +11085,7 @@
       "id": "eb33HQcU9RJz",
       "title": "How many hours do you work in a typical week?",
       "description": "If it varies week to week, please give an average",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -12619,7 +12621,7 @@
       "id": "K1toKSu9Rqoj",
       "title": "How many business miles do you travel each year?",
       "description": "Please answer to the nearest thousand, don't include your commute.",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -17757,7 +17759,7 @@
       "id": "iJoUGgTmoDJg",
       "title": "How many months were you banned for?",
       "description": "",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -17841,7 +17843,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "ui_hint": "height"
     },
     {
       "kind": "field",
@@ -17859,7 +17862,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "ui_hint": "weight"
     },
     {
       "kind": "field",
@@ -17996,6 +18000,7 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
+      "ui_hint": "weight",
       "title_prefix": "Weight Loss Medication"
     },
     {
@@ -18106,6 +18111,7 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
+      "ui_hint": "weight",
       "title_prefix": "Weight Loss Medication"
     },
     {
@@ -26402,7 +26408,7 @@
       "id": "FHXqf488bPwk",
       "title": "What was your latest CD4 count?",
       "description": "",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -33409,7 +33415,7 @@
       "id": "6GG8FX6PmTNm",
       "title": "What was your most recent HbA1c reading?",
       "description": "Give either as a percentage or in mmol/mol, whichever you have.",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -33964,7 +33970,7 @@
       "id": "RpMdXjqBfabB",
       "title": "What was your most recent HbA1c reading?",
       "description": "Give either as a percentage or in mmol/mol, whichever you have.",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -34733,7 +34739,7 @@
       "id": "eVAi2Y3bpNfH",
       "title": "What was your most recent cholesterol reading?",
       "description": "The reading should be given as a number with one decimal place. For example, 6.5.",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -41858,7 +41864,7 @@
       "id": "b736vg3frtB0",
       "title": "At what age did your father die?",
       "description": "",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -41874,7 +41880,7 @@
       "id": "CV97eOkaBwGD",
       "title": "How old is your father now?",
       "description": "",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -41906,7 +41912,7 @@
       "id": "XDXI4Z7Z2sqy",
       "title": "At what age did your mother die?",
       "description": "",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
@@ -41922,7 +41928,7 @@
       "id": "DUTFlmyQplQN",
       "title": "How old is your mother now?",
       "description": "",
-      "type": "short_text",
+      "type": "number",
       "required": true,
       "allow_multiple_selection": false,
       "allow_other_choice": false,
