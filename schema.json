@@ -303,7 +303,8 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Personal & Occupation"
+      "section_category": "Personal & Occupation",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -17783,7 +17784,8 @@
       "properties": {},
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -17983,7 +17985,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18037,7 +18040,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18348,7 +18352,8 @@
       "properties": {},
       "part": 2,
       "parent_section_ref": null,
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18562,7 +18567,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Amphetamines"
+      "title_prefix": "Amphetamines",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18596,7 +18602,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Amphetamines"
+      "title_prefix": "Amphetamines",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18647,7 +18654,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Performance Enhancing Drugs"
+      "title_prefix": "Performance Enhancing Drugs",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18664,7 +18672,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Performance Enhancing Drugs"
+      "title_prefix": "Performance Enhancing Drugs",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18715,7 +18724,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Barbiturates"
+      "title_prefix": "Barbiturates",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18749,7 +18759,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Barbiturates"
+      "title_prefix": "Barbiturates",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18783,7 +18794,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Cannabis"
+      "title_prefix": "Cannabis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18896,7 +18908,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Cocaine"
+      "title_prefix": "Cocaine",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18930,7 +18943,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Cocaine"
+      "title_prefix": "Cocaine",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18981,7 +18995,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Hallucinogens"
+      "title_prefix": "Hallucinogens",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -18998,7 +19013,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Hallucinogens"
+      "title_prefix": "Hallucinogens",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19032,7 +19048,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Opiates"
+      "title_prefix": "Opiates",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19083,7 +19100,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Sedatives"
+      "title_prefix": "Sedatives",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19100,7 +19118,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Sedatives"
+      "title_prefix": "Sedatives",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19134,7 +19153,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Solvents"
+      "title_prefix": "Solvents",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19185,7 +19205,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Other Drugs"
+      "title_prefix": "Other Drugs",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19219,7 +19240,8 @@
       "part": 2,
       "parent_section_ref": null,
       "section_category": "Lifestyle",
-      "title_prefix": "Other Drugs"
+      "title_prefix": "Other Drugs",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19531,7 +19553,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Eating Disorder"
+      "title_prefix": "Eating Disorder",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19548,7 +19571,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Eating Disorder"
+      "title_prefix": "Eating Disorder",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19565,7 +19589,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Eating Disorder"
+      "title_prefix": "Eating Disorder",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19652,7 +19677,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19669,7 +19695,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19686,7 +19713,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19891,7 +19919,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19908,7 +19937,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -19925,7 +19955,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -20130,7 +20161,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -20147,7 +20179,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -20164,7 +20197,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -20369,7 +20403,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -20386,7 +20421,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -20403,7 +20439,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -20635,7 +20672,8 @@
       "properties": {},
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -21105,7 +21143,8 @@
       "properties": {},
       "part": 3,
       "parent_section_ref": "12b7a7f6-d1fc-4622-b6ba-fc142199c0e0",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -21881,7 +21920,8 @@
       "properties": {},
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -22045,7 +22085,8 @@
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
       "section_category": "Health",
-      "title_prefix": "Bowel"
+      "title_prefix": "Bowel",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "display",
@@ -24107,7 +24148,8 @@
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
       "section_category": "Health",
-      "title_prefix": "Thyroid"
+      "title_prefix": "Thyroid",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "display",
@@ -24531,7 +24573,8 @@
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
       "section_category": "Health",
-      "title_prefix": "TIA"
+      "title_prefix": "TIA",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -24930,7 +24973,8 @@
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
       "section_category": "Health",
-      "title_prefix": "Atrial Fibrillation"
+      "title_prefix": "Atrial Fibrillation",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -25592,7 +25636,8 @@
       "part": 4,
       "parent_section_ref": "8e16fb3d-3fae-467a-94f5-6724130bb710",
       "section_category": "Health",
-      "title_prefix": "Epilepsy"
+      "title_prefix": "Epilepsy",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -25609,7 +25654,8 @@
       "part": 4,
       "parent_section_ref": "8e16fb3d-3fae-467a-94f5-6724130bb710",
       "section_category": "Health",
-      "title_prefix": "Epilepsy"
+      "title_prefix": "Epilepsy",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26086,7 +26132,8 @@
       "part": 4,
       "parent_section_ref": "8e16fb3d-3fae-467a-94f5-6724130bb710",
       "section_category": "Health",
-      "title_prefix": "Alzheimer's Disease"
+      "title_prefix": "Alzheimer's Disease",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26122,7 +26169,8 @@
       "part": 4,
       "parent_section_ref": "8e16fb3d-3fae-467a-94f5-6724130bb710",
       "section_category": "Health",
-      "title_prefix": "Alzheimer's Disease"
+      "title_prefix": "Alzheimer's Disease",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26192,7 +26240,8 @@
       "part": 4,
       "parent_section_ref": "8e16fb3d-3fae-467a-94f5-6724130bb710",
       "section_category": "Health",
-      "title_prefix": "Dementia"
+      "title_prefix": "Dementia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26228,7 +26277,8 @@
       "part": 4,
       "parent_section_ref": "8e16fb3d-3fae-467a-94f5-6724130bb710",
       "section_category": "Health",
-      "title_prefix": "Dementia"
+      "title_prefix": "Dementia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26332,7 +26382,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26366,7 +26417,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26477,7 +26529,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26589,7 +26642,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "Hepatitis A/E"
+      "title_prefix": "Hepatitis A/E",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26606,7 +26660,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "Hepatitis"
+      "title_prefix": "Hepatitis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26704,7 +26759,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "Hepatitis"
+      "title_prefix": "Hepatitis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -26755,7 +26811,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "Hepatitis"
+      "title_prefix": "Hepatitis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -27303,7 +27360,8 @@
       "part": 5,
       "parent_section_ref": "aa4befa6-330b-4ae3-bb78-25887d3a72ac",
       "section_category": "Health",
-      "title_prefix": "Iron deficiency anaemia"
+      "title_prefix": "Iron deficiency anaemia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -27756,7 +27814,8 @@
       "part": 5,
       "parent_section_ref": "aa4befa6-330b-4ae3-bb78-25887d3a72ac",
       "section_category": "Health",
-      "title_prefix": "Period related anaemia"
+      "title_prefix": "Period related anaemia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -27838,7 +27897,8 @@
       "part": 5,
       "parent_section_ref": "aa4befa6-330b-4ae3-bb78-25887d3a72ac",
       "section_category": "Health",
-      "title_prefix": "Period related anaemia"
+      "title_prefix": "Period related anaemia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -28257,7 +28317,8 @@
       "part": 5,
       "parent_section_ref": "aa4befa6-330b-4ae3-bb78-25887d3a72ac",
       "section_category": "Health",
-      "title_prefix": "Aplastic anaemia"
+      "title_prefix": "Aplastic anaemia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -28368,7 +28429,8 @@
       "part": 5,
       "parent_section_ref": "aa4befa6-330b-4ae3-bb78-25887d3a72ac",
       "section_category": "Health",
-      "title_prefix": "Aplastic anaemia"
+      "title_prefix": "Aplastic anaemia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -28953,7 +29015,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Heartburn"
+      "title_prefix": "Heartburn",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -28970,7 +29033,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Heartburn"
+      "title_prefix": "Heartburn",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -29145,7 +29209,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Ulcerative Colitis or Proctitis"
+      "title_prefix": "Ulcerative Colitis or Proctitis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -29376,7 +29441,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Ulcerative Colitis or Proctitis"
+      "title_prefix": "Ulcerative Colitis or Proctitis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -29656,7 +29722,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "IBS"
+      "title_prefix": "IBS",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -29673,7 +29740,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "IBS"
+      "title_prefix": "IBS",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -29829,7 +29897,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Crohn's"
+      "title_prefix": "Crohn's",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -30043,7 +30112,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Crohn's"
+      "title_prefix": "Crohn's",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "display",
@@ -30310,7 +30380,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Ulcers"
+      "title_prefix": "Ulcers",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -30631,7 +30702,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Reflux"
+      "title_prefix": "Reflux",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -30648,7 +30720,8 @@
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
       "section_category": "Health",
-      "title_prefix": "Reflux"
+      "title_prefix": "Reflux",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -30981,7 +31054,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Overactive Thyroid"
+      "title_prefix": "Overactive Thyroid",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -31115,7 +31189,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Overactive Thyroid"
+      "title_prefix": "Overactive Thyroid",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -31357,7 +31432,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Overactive Thyroid"
+      "title_prefix": "Overactive Thyroid",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "display",
@@ -31514,7 +31590,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Underactive Thyroid"
+      "title_prefix": "Underactive Thyroid",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -31571,7 +31648,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Underactive Thyroid"
+      "title_prefix": "Underactive Thyroid",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -31719,7 +31797,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Thyroiditis"
+      "title_prefix": "Thyroiditis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -31870,7 +31949,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Thyroiditis"
+      "title_prefix": "Thyroiditis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -32051,7 +32131,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Thyroid Enlargement/Cyst/Lump/Nodule"
+      "title_prefix": "Thyroid Enlargement/Cyst/Lump/Nodule",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -32363,7 +32444,8 @@
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
       "section_category": "Health",
-      "title_prefix": "Thyroid Cancer"
+      "title_prefix": "Thyroid Cancer",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "display",
@@ -33247,7 +33329,8 @@
       "part": 6,
       "parent_section_ref": "3347558a-a493-4407-9729-ac028b52d8e0",
       "section_category": "Health",
-      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}"
+      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -33264,7 +33347,8 @@
       "part": 6,
       "parent_section_ref": "3347558a-a493-4407-9729-ac028b52d8e0",
       "section_category": "Health",
-      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}"
+      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -33854,7 +33938,8 @@
       "part": 6,
       "parent_section_ref": "3347558a-a493-4407-9729-ac028b52d8e0",
       "section_category": "Health",
-      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}"
+      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -33962,7 +34047,8 @@
       "part": 6,
       "parent_section_ref": "3347558a-a493-4407-9729-ac028b52d8e0",
       "section_category": "Health",
-      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}"
+      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -34140,7 +34226,8 @@
       "part": 6,
       "parent_section_ref": "3347558a-a493-4407-9729-ac028b52d8e0",
       "section_category": "Health",
-      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}"
+      "title_prefix": "{{field:64b6da21-9cc0-4344-b732-663364596460}}",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "display",
@@ -34373,7 +34460,8 @@
       "part": 6,
       "parent_section_ref": "add17d07-5dd6-44d9-8115-79db9053ac29",
       "section_category": "Health",
-      "title_prefix": "Blood Pressure"
+      "title_prefix": "Blood Pressure",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -34462,7 +34550,8 @@
       "part": 6,
       "parent_section_ref": "add17d07-5dd6-44d9-8115-79db9053ac29",
       "section_category": "Health",
-      "title_prefix": "Blood Pressure"
+      "title_prefix": "Blood Pressure",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -34714,7 +34803,8 @@
       "part": 6,
       "parent_section_ref": "add17d07-5dd6-44d9-8115-79db9053ac29",
       "section_category": "Health",
-      "title_prefix": "Cholesterol"
+      "title_prefix": "Cholesterol",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -35153,7 +35243,8 @@
       "properties": {},
       "part": 6,
       "parent_section_ref": "67d88673-244b-4521-9cea-fc068aa95422",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -35534,7 +35625,8 @@
       "properties": {},
       "part": 6,
       "parent_section_ref": "67d88673-244b-4521-9cea-fc068aa95422",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -35692,7 +35784,8 @@
       "properties": {},
       "part": 6,
       "parent_section_ref": "e17a5b40-f5b9-46cd-ba1e-5a7ac31eeade",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -35750,7 +35843,8 @@
       "properties": {},
       "part": 6,
       "parent_section_ref": "e17a5b40-f5b9-46cd-ba1e-5a7ac31eeade",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -36342,7 +36436,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "68c6eba1-40de-41b6-8c3b-deeeeacf7178",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -36358,7 +36453,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "68c6eba1-40de-41b6-8c3b-deeeeacf7178",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -36724,7 +36820,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "6b73df4f-ac83-4332-83bc-6e9b7fe744fa",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -36772,7 +36869,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "6b73df4f-ac83-4332-83bc-6e9b7fe744fa",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -36865,7 +36963,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "a9159b7f-cc07-430f-82f5-6f0c3cb35cf5",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -37146,7 +37245,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "98bd620a-f5fa-4f1c-bc91-3b00bf3b7447",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -37445,7 +37545,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Ankylosing Spondylitis"
+      "title_prefix": "Ankylosing Spondylitis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -37553,7 +37654,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Ankylosing Spondylitis"
+      "title_prefix": "Ankylosing Spondylitis",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -37894,7 +37996,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Arthritis (Psoriatic)"
+      "title_prefix": "Arthritis (Psoriatic)",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -38038,7 +38141,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Arthritis (SLE)"
+      "title_prefix": "Arthritis (SLE)",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -38313,7 +38417,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Gout"
+      "title_prefix": "Gout",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -38476,7 +38581,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Osteoarthritis, worn joints, fracture or injury"
+      "title_prefix": "Osteoarthritis, worn joints, fracture or injury",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -38768,7 +38874,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Osteoporosis/Osteopenia"
+      "title_prefix": "Osteoporosis/Osteopenia",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -38980,7 +39087,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Reiter's Disease"
+      "title_prefix": "Reiter's Disease",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -39328,7 +39436,8 @@
       "part": 7,
       "parent_section_ref": "b163cfb6-c361-4114-a34e-084cb97d00ba",
       "section_category": "Health",
-      "title_prefix": "Arthritis (Rheumatoid)"
+      "title_prefix": "Arthritis (Rheumatoid)",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -39688,7 +39797,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "a2c21326-13e4-4aa4-ac0e-362a8e7f881b",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -39850,7 +39960,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "a2c21326-13e4-4aa4-ac0e-362a8e7f881b",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -40111,7 +40222,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "190a390c-a376-43f3-9f05-a7c7267a1eba",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -40273,7 +40385,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "190a390c-a376-43f3-9f05-a7c7267a1eba",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -40534,7 +40647,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "5f63072e-1eb1-4375-b903-285f6eb1d0b6",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -40696,7 +40810,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "5f63072e-1eb1-4375-b903-285f6eb1d0b6",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -40963,7 +41078,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "125f578a-9c61-47e6-880a-3e4939af4171",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",
@@ -40995,7 +41111,8 @@
       "properties": {},
       "part": 7,
       "parent_section_ref": "125f578a-9c61-47e6-880a-3e4939af4171",
-      "section_category": "Health"
+      "section_category": "Health",
+      "ui_hint": "monthyear"
     },
     {
       "kind": "field",

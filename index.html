@@ -336,7 +336,10 @@
   .duration-row label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
   .duration-row .input { max-width: 200px; }
 
-  /* Unit toggle (Imperial / Metric) */
+  /* Month/year picker */
+  .my-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 320px; margin-top: 4px; }
+  .my-col { display: grid; gap: 6px; }
+  .my-col label { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
   .unit-toggle {
     display: inline-flex; border: 1px solid var(--line-strong); border-radius: 99px; overflow: hidden;
     margin-bottom: 18px; background: var(--bg-card); box-shadow: var(--shadow-sm);
@@ -554,7 +557,40 @@
   .review-choice-marker svg { display: none; }
   .review-choice.chosen .review-choice-marker svg { display: block; }
 
-  /* Ensure all question content is left-aligned */
+  .save-progress-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--sans); font-size: 12px; font-weight: 500;
+    color: var(--accent-ink); background: var(--accent-soft);
+    border: 1px solid #cfdcd2; border-radius: 99px;
+    padding: 5px 12px; cursor: pointer; white-space: nowrap;
+    transition: background .15s;
+  }
+  .save-progress-btn:hover { background: #d3e4d8; }
+
+  /* Save/resume overlay */
+  .save-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(28,34,41,0.5); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .save-card {
+    background: var(--bg-card); border-radius: var(--radius-lg);
+    padding: 28px 28px 24px; max-width: 400px; width: 100%;
+    box-shadow: var(--shadow-lg);
+  }
+  .save-card h3 { font-family: var(--serif); font-size: 22px; font-weight: 400; margin: 0 0 8px; }
+  .save-card p { color: var(--ink-soft); font-size: 14px; margin: 0 0 18px; }
+  .save-card-actions { display: flex; gap: 10px; margin-top: 18px; }
+  .toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: #fff; border-radius: 99px;
+    padding: 10px 20px; font-size: 14px; font-weight: 500;
+    z-index: 200; white-space: nowrap;
+    animation: toastIn .25s ease, toastOut .25s ease 2.5s forwards;
+  }
+  @keyframes toastIn  { from { opacity:0; transform:translateX(-50%) translateY(8px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+  @keyframes toastOut { from { opacity:1; } to { opacity:0; } }
   .card, .card *, .stage, .stage * {
     text-align: left;
   }
@@ -598,6 +634,10 @@
         <span class="sep">·</span>
         <span class="sub">Protection Fact Find</span>
       </div>
+      <button class="save-progress-btn" id="saveProgressBtn" style="display:none" title="Save and resume later">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Save progress
+      </button>
     </div>
     <div class="bar-progress">
       <div class="progress-sections" id="progressSections"></div>
@@ -665,6 +705,9 @@
 
   // -------------------- Boot --------------------
   document.addEventListener('keydown', onGlobalKey);
+  document.addEventListener('click', e => {
+    if (e.target && e.target.id === 'saveProgressBtn') showSaveOverlay();
+  });
   loadSchema();
 
   async function loadSchema() {
@@ -673,7 +716,14 @@
       if (!r.ok) throw new Error('Failed to load schema.json (' + r.status + ')');
       schema = await r.json();
       indexSchema();
-      restoreOrSplash();
+      // Check for a resume link in the URL hash first
+      if (tryResumeFromUrl()) {
+        const spb = document.getElementById('saveProgressBtn');
+        if (spb) spb.style.display = 'flex';
+        goTo(currentRef);
+      } else {
+        restoreOrSplash();
+      }
     } catch (err) {
       stage().innerHTML = `<div class="center"><h2>Sorry — couldn't load the form</h2><p>${escapeHtml(err.message)}</p></div>`;
     }
@@ -770,6 +820,9 @@
     saveState();
     renderEntry(entry);
     setProgress(ref);
+    // Show the save-progress button once the form is underway
+    const spb = document.getElementById('saveProgressBtn');
+    if (spb) spb.style.display = 'flex';
   }
 
   function pushHistoryAndGo(targetRef) {
@@ -805,6 +858,14 @@
         return;
       }
       answers[currentRef] = pendingValue;
+    } else if (entry.kind === 'field' && entry.ui_hint === 'monthyear') {
+      const val = answers[currentRef] || {};
+      if (entry.required && !val.year) {
+        const e = document.getElementById('err');
+        if (e) { e.textContent = 'Please select at least a year.'; e.classList.add('show'); }
+        return;
+      }
+      // already committed on change
     } else if (entry.kind === 'field' && entry.ui_hint === 'duration') {
       const val = answers[currentRef] || {};
       if (entry.required && !val.years && !val.months) {
@@ -962,6 +1023,8 @@
       renderOccupationSearch(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'duration') {
       renderDuration(entry);
+    } else if (entry.kind === 'field' && entry.ui_hint === 'monthyear') {
+      renderMonthYear(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'height') {
       renderHeight(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'weight') {
@@ -1556,6 +1619,55 @@
     setTimeout(() => document.getElementById('dur_years')?.focus({ preventScroll: false }), 60);
   }
 
+  // ── Month / Year picker ───────────────────────────────────────────────────
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+
+  function renderMonthYear(entry) {
+    const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+    const now = new Date();
+    const yearOpts = [];
+    for (let y = now.getFullYear(); y >= 1930; y--) yearOpts.push(`<option value="${y}" ${stored.year == y ? 'selected' : ''}>${y}</option>`);
+    const monthOpts = MONTHS.map((m, i) =>
+      `<option value="${i+1}" ${stored.month == i+1 ? 'selected' : ''}>${m}</option>`).join('');
+
+    stage().innerHTML = `
+      <div class="card">
+        ${eyebrow(entry, entry.section_category || 'Health')}
+        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+        ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
+        <div class="field my-grid">
+          <div class="my-col">
+            <label for="my_month">Month</label>
+            <select class="input" id="my_month">
+              <option value="">— Month —</option>
+              ${monthOpts}
+            </select>
+          </div>
+          <div class="my-col">
+            <label for="my_year">Year</label>
+            <select class="input" id="my_year">
+              <option value="">— Year —</option>
+              ${yearOpts}
+            </select>
+          </div>
+        </div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+
+    wireNav();
+
+    function save() {
+      const m = document.getElementById('my_month')?.value;
+      const y = document.getElementById('my_year')?.value;
+      answers[entry.ref] = (m || y) ? { month: m, year: y } : {};
+    }
+    document.getElementById('my_month')?.addEventListener('change', save);
+    document.getElementById('my_year')?.addEventListener('change', save);
+    save();
+  }
+
   // ── Height (imperial ft/in or metric cm) ──────────────────────────────────
   function renderHeight(entry) {
     const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
@@ -2006,6 +2118,16 @@
       return `<span class="review-a">${formatAnswer(a)}</span>`;
     }
 
+    // Month/Year date picker
+    if (ui_hint === 'monthyear') {
+      if (a && typeof a === 'object') {
+        const m = a.month ? MONTHS[Number(a.month) - 1] : null;
+        const txt = m ? `${m} ${a.year}` : (a.year || '—');
+        return `<span class="review-a">${escapeHtml(txt)}</span>`;
+      }
+      return `<span class="review-a">${formatAnswer(a)}</span>`;
+    }
+
     // Duration — show "X years, Y months"
     if (ui_hint === 'duration') {
       if (a && typeof a === 'object') {
@@ -2101,7 +2223,10 @@
     function plainResolve(a) {
       if (a === true) return 'Yes';
       if (a === false) return 'No';
-      if (a && typeof a === 'object' && ('years' in a || 'months' in a)) {
+      if (a && typeof a === 'object' && ('month' in a || 'year' in a)) {
+        const mn = a.month ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][Number(a.month)-1] : '';
+        return [mn, a.year].filter(Boolean).join(' ') || '—';
+      }
         const parts = [];
         if (a.years)  parts.push(`${a.years} year${a.years == 1 ? '' : 's'}`);
         if (a.months) parts.push(`${a.months} month${a.months == 1 ? '' : 's'}`);
@@ -2219,7 +2344,109 @@
   }
 
   // -------------------- Helpers --------------------
-  // -------------------- Sectioned progress bar --------------------
+  // -------------------- Save & resume on another device --------------------
+  function buildResumeUrl() {
+    const payload = { answers, currentRef, savedAt: Date.now() };
+    const json = JSON.stringify(payload);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    const base = location.href.split('#')[0];
+    return base + '#resume=' + b64;
+  }
+
+  function showSaveOverlay() {
+    const clientEmail = extractField('email') || '';
+    const existing = document.getElementById('saveOverlay');
+    if (existing) existing.remove();
+    const div = document.createElement('div');
+    div.className = 'save-overlay';
+    div.id = 'saveOverlay';
+    div.innerHTML = `
+      <div class="save-card">
+        <h3>Save your progress</h3>
+        <p>We'll email you a link. Open it on any device to carry on from exactly where you left off.</p>
+        <label class="sub-label" for="saveEmail" style="display:block;margin-bottom:6px">Your email address</label>
+        <input class="input" id="saveEmail" type="email" placeholder="you@example.com" value="${escapeAttr(clientEmail)}" autocomplete="email" />
+        <div class="error-msg" id="saveErr" style="margin-top:8px"></div>
+        <div class="save-card-actions">
+          <button class="btn primary" id="saveSendBtn">Send link</button>
+          <button class="btn ghost" id="saveCancelBtn">Cancel</button>
+        </div>
+      </div>`;
+    document.body.appendChild(div);
+    div.querySelector('#saveEmail').focus();
+
+    div.querySelector('#saveCancelBtn').addEventListener('click', () => div.remove());
+    div.addEventListener('click', e => { if (e.target === div) div.remove(); });
+
+    div.querySelector('#saveSendBtn').addEventListener('click', async () => {
+      const email = div.querySelector('#saveEmail').value.trim();
+      const errEl = div.querySelector('#saveErr');
+      errEl.classList.remove('show');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errEl.textContent = 'Please enter a valid email address.';
+        errEl.classList.add('show');
+        return;
+      }
+      const btn = div.querySelector('#saveSendBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+
+      const resumeUrl = buildResumeUrl();
+      const clientName = (extractField('first_name') + ' ' + extractField('last_name')).trim() || 'there';
+
+      try {
+        if (!WEB3FORMS_KEY) throw new Error('No key');
+        const r = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: 'Your Baker Hudson Health fact find — resume link',
+            name: clientName,
+            email: email,
+            message: `Hi ${clientName},\n\nHere is your link to resume your fact find:\n\n${resumeUrl}\n\nJust open this link on any device and your answers will be restored.\n\nBaker Hudson Health`,
+            botcheck: '',
+          }),
+        });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok || data.success === false) throw new Error('Send failed');
+        div.remove();
+        showToast('Link sent to ' + email);
+      } catch (_) {
+        // Fallback: copy to clipboard
+        try { await navigator.clipboard.writeText(resumeUrl); showToast('Link copied to clipboard'); div.remove(); }
+        catch (_) {
+          errEl.textContent = 'Could not send — please copy the link: ' + resumeUrl;
+          errEl.classList.add('show');
+          btn.disabled = false; btn.textContent = 'Send link';
+        }
+      }
+    });
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+
+  function tryResumeFromUrl() {
+    const hash = location.hash;
+    if (!hash.startsWith('#resume=')) return false;
+    try {
+      const b64 = hash.slice(8);
+      const json = decodeURIComponent(escape(atob(b64)));
+      const payload = JSON.parse(json);
+      if (!payload.answers || !payload.currentRef) return false;
+      answers  = payload.answers;
+      history  = [];
+      currentRef = payload.currentRef;
+      // Clear the hash so refresh doesn't re-apply
+      history.replaceState(null, '', location.pathname + location.search);
+      return true;
+    } catch (_) { return false; }
+  }
   // Build the section list once, lazily
   let _progressSections = null;
   function getProgressSections() {
