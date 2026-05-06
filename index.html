@@ -431,8 +431,49 @@
   .resume-banner button { background: none; border: 1px solid var(--accent); color: var(--accent-ink); padding: 6px 12px; border-radius: 99px; font-size: 13px; cursor: pointer; font-family: var(--sans); }
   .resume-banner button:hover { background: var(--accent); color: #fff; }
 
-  /* Review */
-  .review-section {
+  /* ========== Review layout ========== */
+  .review-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    align-items: start;
+  }
+  .review-content { min-width: 0; }
+  .review-sidebar {
+    display: none; /* hidden on mobile — button is fixed to bottom instead */
+  }
+  .review-submit-fixed {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    background: rgba(246,243,238,0.95);
+    backdrop-filter: blur(8px) saturate(140%);
+    border-top: 1px solid var(--line);
+    padding: 14px 20px;
+    display: flex; gap: 10px; align-items: center;
+    box-shadow: 0 -8px 24px rgba(28,34,41,0.08);
+  }
+  .review-submit-fixed .btn.primary { flex: 1; justify-content: center; }
+  .review-submit-fixed .btn.ghost { flex-shrink: 0; }
+  /* push content clear of the fixed bar on mobile */
+  .review-mobile-spacer { height: 80px; }
+
+  @media (min-width: 760px) {
+    .review-layout {
+      grid-template-columns: 1fr 220px;
+      gap: 32px;
+    }
+    .review-sidebar {
+      display: block;
+      position: sticky;
+      top: 90px; /* clear the sticky header */
+    }
+    .review-sidebar-inner {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .review-submit-fixed { display: none; } /* use sidebar on desktop */
+    .review-mobile-spacer { display: none; }
+  }
     margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line);
   }
   .review-section:first-of-type { border-top: none; padding-top: 0; }
@@ -1509,16 +1550,30 @@
       <div class="card">
         <span class="eyebrow"><span class="dot"></span>Review &amp; submit</span>
         <h1 class="q-title">Almost <em>done</em>.</h1>
-        <p class="q-desc">Please review the answers below. If anything needs changing, use the back button — your other answers will be kept.</p>
-        ${sections}
-        <div id="submitErr" class="error-msg"></div>
-        <div class="actions" style="margin-top:32px">
-          <button class="btn primary" id="submitBtn">Submit fact find <span aria-hidden="true">→</span></button>
-          <button class="btn ghost" id="backBtn">← Back to last question</button>
+        <p class="q-desc">Please review your answers below. If anything needs changing, use the back button — your other answers will be kept.</p>
+        <div class="review-layout">
+          <div class="review-content">
+            ${sections}
+            <div id="submitErr" class="error-msg" style="margin-top:16px"></div>
+          </div>
+          <div class="review-sidebar">
+            <div class="review-sidebar-inner">
+              <button class="btn primary" id="submitBtnDesk">Submit fact find <span aria-hidden="true">→</span></button>
+              <button class="btn ghost" id="backBtnDesk" style="justify-content:center">← Back</button>
+            </div>
+          </div>
         </div>
+        <div class="review-mobile-spacer"></div>
+      </div>
+      <div class="review-submit-fixed">
+        <button class="btn ghost" id="backBtnMob">← Back</button>
+        <button class="btn primary" id="submitBtnMob">Submit fact find →</button>
       </div>`;
-    document.getElementById('backBtn').addEventListener('click', back);
-    document.getElementById('submitBtn').addEventListener('click', onSubmit);
+
+    document.getElementById('backBtnDesk')?.addEventListener('click', back);
+    document.getElementById('backBtnMob')?.addEventListener('click', back);
+    document.getElementById('submitBtnDesk')?.addEventListener('click', onSubmit);
+    document.getElementById('submitBtnMob')?.addEventListener('click', onSubmit);
   }
 
   function buildReviewGroups() {
@@ -1670,8 +1725,8 @@
 
   async function onSubmit() {
     const errEl = document.getElementById('submitErr');
-    const btn = document.getElementById('submitBtn');
-    if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+    const btns = ['submitBtnDesk','submitBtnMob'].map(id => document.getElementById(id)).filter(Boolean);
+    btns.forEach(b => { b.disabled = true; b.textContent = 'Submitting…'; });
     errEl.classList.remove('show');
 
     // Build a readable plain-text summary for the email body
@@ -1728,7 +1783,7 @@
           <p>Your fact find has been received. Your adviser will be in touch shortly.</p>
         </div>`;
     } catch (err) {
-      if (btn) { btn.disabled = false; btn.textContent = 'Submit fact find →'; }
+      btns.forEach(b => { b.disabled = false; b.textContent = b.id === 'submitBtnMob' ? 'Submit fact find →' : 'Submit fact find →'; });
       errEl.textContent = 'There was a problem submitting your answers. Please try again or contact your adviser. (' + err.message + ')';
       errEl.classList.add('show');
     }
