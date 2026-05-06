@@ -2355,72 +2355,57 @@
   }
 
   function showSaveOverlay() {
-    const clientEmail = extractField('email') || '';
     const existing = document.getElementById('saveOverlay');
     if (existing) existing.remove();
+
+    const resumeUrl = buildResumeUrl();
+
     const div = document.createElement('div');
     div.className = 'save-overlay';
     div.id = 'saveOverlay';
     div.innerHTML = `
       <div class="save-card">
         <h3>Save your progress</h3>
-        <p>We'll email you a link. Open it on any device to carry on from exactly where you left off.</p>
-        <label class="sub-label" for="saveEmail" style="display:block;margin-bottom:6px">Your email address</label>
-        <input class="input" id="saveEmail" type="email" placeholder="you@example.com" value="${escapeAttr(clientEmail)}" autocomplete="email" />
-        <div class="error-msg" id="saveErr" style="margin-top:8px"></div>
+        <p>Copy the link below and open it on any device to carry on from exactly where you left off.</p>
+        <div style="display:flex;gap:8px;align-items:stretch;margin-bottom:16px">
+          <input class="input" id="resumeUrlInput" type="text" readonly
+            value="${escapeAttr(resumeUrl)}"
+            style="font-size:12px;color:var(--ink-soft);flex:1;min-width:0;cursor:text" />
+        </div>
         <div class="save-card-actions">
-          <button class="btn primary" id="saveSendBtn">Send link</button>
-          <button class="btn ghost" id="saveCancelBtn">Cancel</button>
+          <button class="btn primary" id="saveCopyBtn">Copy link</button>
+          <button class="btn ghost" id="saveMailBtn">Open in email</button>
+          <button class="btn ghost" id="saveCancelBtn">Close</button>
         </div>
       </div>`;
     document.body.appendChild(div);
-    div.querySelector('#saveEmail').focus();
+
+    const urlInput = div.querySelector('#resumeUrlInput');
+    urlInput.addEventListener('focus', () => urlInput.select());
 
     div.querySelector('#saveCancelBtn').addEventListener('click', () => div.remove());
     div.addEventListener('click', e => { if (e.target === div) div.remove(); });
 
-    div.querySelector('#saveSendBtn').addEventListener('click', async () => {
-      const email = div.querySelector('#saveEmail').value.trim();
-      const errEl = div.querySelector('#saveErr');
-      errEl.classList.remove('show');
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errEl.textContent = 'Please enter a valid email address.';
-        errEl.classList.add('show');
-        return;
-      }
-      const btn = div.querySelector('#saveSendBtn');
-      btn.disabled = true; btn.textContent = 'Sending…';
-
-      const resumeUrl = buildResumeUrl();
-      const clientName = (extractField('first_name') + ' ' + extractField('last_name')).trim() || 'there';
-
+    div.querySelector('#saveCopyBtn').addEventListener('click', async () => {
       try {
-        if (!WEB3FORMS_KEY) throw new Error('No key');
-        const r = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: 'Your Baker Hudson Health fact find — resume link',
-            name: clientName,
-            email: email,
-            message: `Hi ${clientName},\n\nHere is your link to resume your fact find:\n\n${resumeUrl}\n\nJust open this link on any device and your answers will be restored.\n\nBaker Hudson Health`,
-            botcheck: '',
-          }),
-        });
-        const data = await r.json().catch(() => ({}));
-        if (!r.ok || data.success === false) throw new Error('Send failed');
+        await navigator.clipboard.writeText(resumeUrl);
+        showToast('Link copied to clipboard');
         div.remove();
-        showToast('Link sent to ' + email);
       } catch (_) {
-        // Fallback: copy to clipboard
-        try { await navigator.clipboard.writeText(resumeUrl); showToast('Link copied to clipboard'); div.remove(); }
-        catch (_) {
-          errEl.textContent = 'Could not send — please copy the link: ' + resumeUrl;
-          errEl.classList.add('show');
-          btn.disabled = false; btn.textContent = 'Send link';
-        }
+        urlInput.select();
+        document.execCommand('copy');
+        showToast('Link copied');
+        div.remove();
       }
+    });
+
+    div.querySelector('#saveMailBtn').addEventListener('click', () => {
+      const subject = encodeURIComponent('Your Baker Hudson Health fact find — resume link');
+      const body = encodeURIComponent(
+        'Here is your link to resume your fact find:\n\n' + resumeUrl +
+        '\n\nJust open this link on any device and your answers will be restored.'
+      );
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
     });
   }
 
