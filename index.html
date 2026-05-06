@@ -580,7 +580,7 @@
 
   // -------------------- Config --------------------
   const STORAGE_KEY = 'bhh_factfind_v1';
-  const NOTIFY_EMAIL = (window.NOTIFY_EMAIL || '').trim();
+  const WEB3FORMS_KEY = (window.WEB3FORMS_KEY || '').trim();
 
   // -------------------- State --------------------
   let schema = null;
@@ -1747,33 +1747,32 @@
     }
     const summary = bodyLines.join('\n').trim();
 
-    if (!NOTIFY_EMAIL || NOTIFY_EMAIL === 'you@example.com') {
-      // No email configured — show preview
+    if (!WEB3FORMS_KEY) {
       stage().innerHTML = `
         <div class="card">
           <span class="eyebrow"><span class="dot"></span>Preview mode</span>
           <h1 class="q-title">Submission ready</h1>
-          <p class="q-desc">No email address is set in <code>config.js</code>. Below is the summary that would be emailed.</p>
+          <p class="q-desc">No Web3Forms key is set in <code>config.js</code>. Below is the summary that would be emailed.</p>
           <pre style="background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:16px;overflow:auto;max-height:60vh;font-size:13px;white-space:pre-wrap">${escapeHtml(summary)}</pre>
         </div>`;
       return;
     }
 
     try {
-      const r = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(NOTIFY_EMAIL)}`, {
+      const r = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
-          _subject: 'New fact find — ' + clientName.trim(),
+          access_key: WEB3FORMS_KEY,
+          subject: 'New fact find — ' + clientName.trim(),
           name: clientName.trim() || 'Client',
-          email: clientEmail || NOTIFY_EMAIL,
+          email: clientEmail || 'noreply@bakerhudsonhealth.com',
           message: summary,
-          _template: 'table',
-          _captcha: 'false',
+          botcheck: '',
         }),
       });
       const data = await r.json().catch(() => ({}));
-      if (!r.ok || data.success === 'false' || data.success === false) {
+      if (!r.ok || data.success === false) {
         throw new Error(data.message || 'Submit failed (' + r.status + ')');
       }
       clearState();
@@ -1783,7 +1782,7 @@
           <p>Your fact find has been received. Your adviser will be in touch shortly.</p>
         </div>`;
     } catch (err) {
-      btns.forEach(b => { b.disabled = false; b.textContent = b.id === 'submitBtnMob' ? 'Submit fact find →' : 'Submit fact find →'; });
+      btns.forEach(b => { b.disabled = false; b.textContent = 'Submit fact find →'; });
       errEl.textContent = 'There was a problem submitting your answers. Please try again or contact your adviser. (' + err.message + ')';
       errEl.classList.add('show');
     }
