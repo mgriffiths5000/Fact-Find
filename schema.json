@@ -389,7 +389,8 @@
       "properties": {},
       "part": 1,
       "parent_section_ref": null,
-      "section_category": "Personal & Occupation"
+      "section_category": "Personal & Occupation",
+      "ui_hint": "citizenship"
     },
     {
       "kind": "field",

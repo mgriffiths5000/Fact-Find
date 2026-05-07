@@ -855,7 +855,7 @@
     const entry = orderById.get(currentRef);
     if (!entry) return;
     if (entry.kind === 'field') {
-      const customHints = new Set(['duration','height','weight','monthyear','address','occupation_search']);
+      const customHints = new Set(['duration','height','weight','monthyear','address','occupation_search','citizenship']);
       if (!customHints.has(entry.ui_hint || '')) {
         // Standard field — validate and stage pendingValue
         const ok = validateAndStage(entry);
@@ -870,6 +870,8 @@
         if (entry.ui_hint === 'occupation_search') {
           if (entry.required && !val) { customFail('Please select an occupation.'); return; }
           maybeSetCondCtxFromAnswer(entry, val);
+        } else if (entry.ui_hint === 'citizenship') {
+          if (entry.required && !val) { customFail('Please select a country.'); return; }
         } else if (entry.ui_hint === 'address') {
           if (entry.required && typeof val !== 'object') { customFail('Please enter your address.'); return; }
           if (entry.required && val && !val.line1 && !val.postcode) { customFail('Please enter your address.'); return; }
@@ -1037,6 +1039,8 @@
       renderOccupationSearch(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'address') {
       renderAddress(entry);
+    } else if (entry.kind === 'field' && entry.ui_hint === 'citizenship') {
+      renderCitizenship(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'duration') {
       renderDuration(entry);
     } else if (entry.kind === 'field' && entry.ui_hint === 'monthyear') {
@@ -1794,15 +1798,100 @@
   }
 
   // ── Address with postcode lookup ──────────────────────────────────────────
+  // ── Citizenship — searchable country dropdown ─────────────────────────────
+  const ALL_COUNTRIES = [
+    'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina',
+    'Armenia','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados',
+    'Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina',
+    'Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia',
+    'Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros',
+    'Congo (Brazzaville)','Congo (Kinshasa)','Costa Rica','Croatia','Cuba','Cyprus',
+    'Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt',
+    'El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji',
+    'Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada',
+    'Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hungary','Iceland',
+    'India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan',
+    'Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho',
+    'Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar','Malawi','Malaysia',
+    'Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia',
+    'Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia',
+    'Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Korea',
+    'North Macedonia','Norway','Oman','Pakistan','Palau','Palestine','Panama',
+    'Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania',
+    'Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines',
+    'Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia',
+    'Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia',
+    'South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname',
+    'Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste',
+    'Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda',
+    'Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan',
+    'Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe',
+    // British Overseas Territories & Crown Dependencies
+    'Guernsey','Jersey','Isle of Man','Gibraltar','Bermuda','Cayman Islands',
+    'British Virgin Islands','Turks and Caicos Islands','Montserrat','Anguilla',
+    'Falkland Islands','St Helena','Ascension Island','Tristan da Cunha',
+    'British Indian Ocean Territory','Pitcairn Islands',
+    // Other territories
+    'Hong Kong','Macau','Taiwan','Kosovo','Other',
+  ].sort((a, b) => {
+    // United Kingdom always first
+    if (a === 'United Kingdom') return -1;
+    if (b === 'United Kingdom') return 1;
+    return a.localeCompare(b);
+  });
+
+  function renderCitizenship(entry) {
+    const stored = answers[entry.ref] || '';
+    const opts = ALL_COUNTRIES.map(c =>
+      `<option value="${escapeAttr(c)}" ${stored === c ? 'selected' : ''}>${escapeHtml(c)}</option>`
+    ).join('');
+
+    stage().innerHTML = `
+      <div class="card">
+        ${eyebrow(entry, entry.section_category || 'Personal & Occupation')}
+        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <div class="field" style="max-width:320px">
+          <select class="input" id="citizen_sel" autocomplete="country-name">
+            <option value="">— Select country —</option>
+            ${opts}
+          </select>
+        </div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
+
+    wireNav();
+    const sel = document.getElementById('citizen_sel');
+    sel.addEventListener('change', () => { answers[entry.ref] = sel.value; });
+    setTimeout(() => sel.focus(), 60);
+  }
+
+  // ── Address with country selector + postcode lookup ──────────────────────
+  const COUNTRY_OPTIONS = [
+    { value: 'gb', label: 'United Kingdom' },
+    { value: 'je', label: 'Jersey' },
+    { value: 'gg', label: 'Guernsey' },
+    { value: 'im', label: 'Isle of Man' },
+    { value: 'other', label: 'Other' },
+  ];
+
   function renderAddress(entry) {
     const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
 
     function mount() {
+      const countryOpts = COUNTRY_OPTIONS.map(o =>
+        `<option value="${o.value}" ${(stored.country||'gb') === o.value ? 'selected' : ''}>${o.label}</option>`
+      ).join('');
+
       stage().innerHTML = `
         <div class="card">
           ${eyebrow(entry, entry.section_category || 'Personal & Occupation')}
-          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
+          <h1 class="q-title">${formatTitle(entry.title)}</h1>
           <div class="field address-grid">
+            <div class="address-row">
+              <label for="addr_country">Country</label>
+              <select class="input" id="addr_country" style="max-width:280px">${countryOpts}</select>
+            </div>
             <div class="address-row">
               <label for="addr_pc">Postcode</label>
               <div class="postcode-row">
@@ -1812,6 +1901,14 @@
               </div>
               <div class="postcode-hint" id="pcHint"></div>
             </div>
+            <div id="addrDropWrap" style="display:none">
+              <div class="address-row">
+                <label for="addr_select">Select your address</label>
+                <select class="input" id="addr_select">
+                  <option value="">— Select address —</option>
+                </select>
+              </div>
+            </div>
             <div class="address-row">
               <label for="addr_l1">Address line 1</label>
               <input class="input" id="addr_l1" type="text" autocomplete="address-line1"
@@ -1820,17 +1917,17 @@
             <div class="address-row">
               <label for="addr_l2">Address line 2 <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
               <input class="input" id="addr_l2" type="text" autocomplete="address-line2"
-                placeholder="" value="${escapeAttr(stored.line2||'')}">
+                value="${escapeAttr(stored.line2||'')}">
             </div>
             <div class="address-row">
               <label for="addr_town">Town / City</label>
               <input class="input" id="addr_town" type="text" autocomplete="address-level2"
-                placeholder="" value="${escapeAttr(stored.town||'')}">
+                value="${escapeAttr(stored.town||'')}">
             </div>
             <div class="address-row">
               <label for="addr_county">County <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
               <input class="input" id="addr_county" type="text" autocomplete="address-level1"
-                placeholder="" value="${escapeAttr(stored.county||'')}">
+                value="${escapeAttr(stored.county||'')}">
             </div>
           </div>
           <div class="error-msg" id="err"></div>
@@ -1841,6 +1938,7 @@
 
       function save() {
         answers[entry.ref] = {
+          country:  document.getElementById('addr_country')?.value || 'gb',
           postcode: document.getElementById('addr_pc')?.value.trim().toUpperCase() || '',
           line1:    document.getElementById('addr_l1')?.value.trim() || '',
           line2:    document.getElementById('addr_l2')?.value.trim() || '',
@@ -1849,37 +1947,76 @@
         };
       }
 
-      stage().querySelectorAll('input').forEach(i => i.addEventListener('input', save));
+      stage().querySelectorAll('input, select').forEach(i => i.addEventListener('input', save));
       save();
 
-      // Postcode lookup via postcodes.io
-      const pcInput = document.getElementById('addr_pc');
-      const hint    = document.getElementById('pcHint');
-      const btn     = document.getElementById('pcLookupBtn');
+      const pcInput    = document.getElementById('addr_pc');
+      const hint       = document.getElementById('pcHint');
+      const btn        = document.getElementById('pcLookupBtn');
+      const dropWrap   = document.getElementById('addrDropWrap');
+      const addrSelect = document.getElementById('addr_select');
 
       async function lookup() {
-        const pc = pcInput.value.trim().replace(/\s+/g,'').toUpperCase();
-        if (!pc) { hint.textContent = 'Please enter a postcode first.'; return; }
-        btn.disabled = true; btn.textContent = 'Looking up…'; hint.textContent = '';
+        const pc = pcInput.value.trim().replace(/\s+/g, '').toUpperCase();
+        const country = document.getElementById('addr_country')?.value || 'gb';
+        if (!pc) { hint.style.color = 'var(--warn)'; hint.textContent = 'Please enter a postcode first.'; return; }
+
+        btn.disabled = true; btn.textContent = 'Looking up…';
+        hint.textContent = ''; dropWrap.style.display = 'none';
+
         try {
-          const r = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(pc)}`);
-          const d = await r.json();
-          if (d.status !== 200 || !d.result) throw new Error('Postcode not found');
-          const res = d.result;
-          // Fill town and county from the result
-          const town   = res.admin_ward || res.parish || res.admin_district || '';
-          const county = res.admin_county || res.region || '';
-          const normPc = res.postcode || pc;
-          document.getElementById('addr_pc').value    = normPc;
-          document.getElementById('addr_town').value  = town;
-          document.getElementById('addr_county').value = county;
-          save();
+          // Nominatim is free, covers UK and Channel Islands (je, gg, im)
+          const cc = country === 'other' ? '' : `&countrycodes=${country}`;
+          const url = `https://nominatim.openstreetmap.org/search?format=json&postalcode=${encodeURIComponent(pc)}${cc}&addressdetails=1&limit=20`;
+          const r = await fetch(url, { headers: { 'Accept-Language': 'en-GB', 'User-Agent': 'BHH-FactFind/1.0' } });
+          const results = await r.json();
+
+          if (!results || !results.length) throw new Error('not found');
+
+          // Build deduplicated address list from results
+          const seen = new Set();
+          const options = results.map(res => {
+            const a = res.address || {};
+            const road   = a.road || a.pedestrian || a.footway || '';
+            const house  = a.house_number || '';
+            const line1  = [house, road].filter(Boolean).join(' ');
+            const town   = a.town || a.city || a.village || a.hamlet || a.suburb || '';
+            const county = a.county || a.state_district || a.region || '';
+            const label  = [line1, town, county, pc].filter(Boolean).join(', ');
+            return { line1, town, county, label };
+          }).filter(o => {
+            if (seen.has(o.label)) return false;
+            seen.add(o.label); return true;
+          });
+
+          addrSelect.innerHTML =
+            '<option value="">— Select your address —</option>' +
+            options.map((o, i) => `<option value="${i}">${escapeHtml(o.label)}</option>`).join('') +
+            "<option value=\"manual\">Enter my address manually</option>";
+          dropWrap.style.display = 'block';
+
+          addrSelect.onchange = function() {
+            if (this.value === '' || this.value === 'manual') {
+              document.getElementById('addr_l1').focus();
+              return;
+            }
+            const o = options[Number(this.value)];
+            if (!o) return;
+            document.getElementById('addr_l1').value    = o.line1;
+            document.getElementById('addr_l2').value    = '';
+            document.getElementById('addr_town').value  = o.town;
+            document.getElementById('addr_county').value = o.county;
+            document.getElementById('addr_pc').value    = pc;
+            save();
+          };
+
           hint.style.color = 'var(--accent-ink)';
-          hint.textContent = '✓ Postcode found — please fill in your street address above.';
-          document.getElementById('addr_l1').focus();
+          hint.textContent = `${options.length} result${options.length !== 1 ? 's' : ''} found — select yours or enter manually below.`;
+
         } catch (_) {
           hint.style.color = 'var(--warn)';
-          hint.textContent = 'Postcode not found. Please check and try again, or fill in your address manually.';
+          hint.textContent = 'Postcode not found. Please fill in your address manually.';
+          document.getElementById('addr_l1').focus();
         } finally {
           btn.disabled = false; btn.textContent = 'Find address';
         }
@@ -2284,7 +2421,8 @@
 
     // Address
     if (ui_hint === 'address' && a && typeof a === 'object') {
-      const parts = [a.line1, a.line2, a.town, a.county, a.postcode].filter(Boolean);
+      const countryLabel = COUNTRY_OPTIONS?.find(o => o.value === a.country)?.label || a.country || '';
+      const parts = [a.line1, a.line2, a.town, a.county, a.postcode, countryLabel !== 'United Kingdom' ? countryLabel : ''].filter(Boolean);
       return `<span class="review-a">${escapeHtml(parts.join(', ') || '—')}</span>`;
     }
 
@@ -2371,7 +2509,9 @@
       if (a && typeof a === 'object' && a.unit === 'metric' && 'kg' in a) return `${a.kg} kg`;
       if (a && typeof a === 'object' && a.unit === 'imperial' && 'stone' in a) return `${a.stone} st ${a.pounds} lb`;
       if (a && typeof a === 'object' && ('line1' in a || 'postcode' in a)) {
-        return [a.line1, a.line2, a.town, a.county, a.postcode].filter(Boolean).join(', ') || '—';
+        const countryLabel = (COUNTRY_OPTIONS || []).find(o => o.value === a.country)?.label || '';
+        const countryStr = countryLabel && countryLabel !== 'United Kingdom' ? countryLabel : '';
+        return [a.line1, a.line2, a.town, a.county, a.postcode, countryStr].filter(Boolean).join(', ') || '—';
       }
       if (Array.isArray(a)) return a.map(x => (schema.choice_index[x] && schema.choice_index[x].label) || x).join(', ');
       if (typeof a === 'string' && schema.choice_index[a]) return schema.choice_index[a].label;
@@ -2729,6 +2869,10 @@
     });
     t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Remove any remaining lone asterisks (Typeform required-field markers)
+    t = t.replace(/\*/g, '');
+    // Collapse any double spaces left behind
+    t = t.replace(/  +/g, ' ').trim();
     return t;
   }
   function stripFormatting(s) {
