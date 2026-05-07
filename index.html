@@ -144,7 +144,6 @@
     max-width: 600px;
   }
   .q-desc a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
-  .q-required { color: var(--warn); margin-left: 4px; }
 
   /* ========== Inputs ========== */
   .field { margin: 8px 0 0; }
@@ -834,6 +833,9 @@
     saveState();
     renderEntry(entry);
     setProgress(ref);
+    // Hide any lingering global dropdown (occupation search)
+    const gd = document.getElementById('occDropdownGlobal');
+    if (gd) gd.style.display = 'none';
     // Show the save-progress button once the form is underway
     const spb = document.getElementById('saveProgressBtn');
     if (spb) spb.style.display = 'flex';
@@ -853,60 +855,46 @@
     const entry = orderById.get(currentRef);
     if (!entry) return;
     if (entry.kind === 'field') {
-      const ok = validateAndStage(entry);
-      if (!ok) return;
-      answers[currentRef] = pendingValue;
-      // If this is a condition-picker (no own prefix, Health/Lifestyle, choice answer),
-      // capture the selected label(s) so un-prefixed follow-up questions inherit the badge.
-      maybeSetCondCtxFromAnswer(entry, pendingValue);
+      const customHints = new Set(['duration','height','weight','monthyear','address','occupation_search']);
+      if (!customHints.has(entry.ui_hint || '')) {
+        // Standard field — validate and stage pendingValue
+        const ok = validateAndStage(entry);
+        if (!ok) return;
+        answers[currentRef] = pendingValue;
+        maybeSetCondCtxFromAnswer(entry, pendingValue);
+      } else {
+        // Custom-rendered fields save directly to answers[]; validate here
+        const val = answers[currentRef];
+        const e = document.getElementById('err');
+        function customFail(msg) { if (e) { e.textContent = msg; e.classList.add('show'); } }
+        if (entry.ui_hint === 'occupation_search') {
+          if (entry.required && !val) { customFail('Please select an occupation.'); return; }
+          maybeSetCondCtxFromAnswer(entry, val);
+        } else if (entry.ui_hint === 'address') {
+          if (entry.required && typeof val !== 'object') { customFail('Please enter your address.'); return; }
+          if (entry.required && val && !val.line1 && !val.postcode) { customFail('Please enter your address.'); return; }
+        } else if (entry.ui_hint === 'monthyear') {
+          if (entry.required && (!val || !val.year)) { customFail('Please select at least a year.'); return; }
+        } else if (entry.ui_hint === 'duration') {
+          if (entry.required && (!val || (!val.years && !val.months))) { customFail('Please enter a duration.'); return; }
+        } else if (entry.ui_hint === 'height') {
+          if (entry.required && val) {
+            const empty = val.unit === 'metric' ? !val.cm : (!val.feet && !val.inches);
+            if (empty) { customFail('Please enter your height.'); return; }
+          }
+        } else if (entry.ui_hint === 'weight') {
+          if (entry.required && val) {
+            const empty = val.unit === 'metric' ? !val.kg : (!val.stone && !val.pounds);
+            if (empty) { customFail('Please enter your weight.'); return; }
+          }
+        }
+      }
     } else if (entry.kind === 'page') {
       const ok = validatePage(entry);
       if (!ok) return;
     } else if (entry.kind === 'custom') {
       const ok = validateCustom(entry);
       if (!ok) return;
-    } else if (entry.kind === 'field' && entry.ui_hint === 'occupation_search') {
-      if (entry.required && !pendingValue) {
-        const e = document.getElementById('err');
-        if (e) { e.textContent = 'Please select an occupation.'; e.classList.add('show'); }
-        return;
-      }
-      answers[currentRef] = pendingValue;
-    } else if (entry.kind === 'field' && entry.ui_hint === 'address') {
-      const val = answers[currentRef] || {};
-      if (entry.required && !val.line1 && !val.postcode) {
-        const e = document.getElementById('err');
-        if (e) { e.textContent = 'Please enter your address.'; e.classList.add('show'); }
-        return;
-      }
-    } else if (entry.kind === 'field' && entry.ui_hint === 'monthyear') {
-      const val = answers[currentRef] || {};
-      if (entry.required && !val.year) {
-        const e = document.getElementById('err');
-        if (e) { e.textContent = 'Please select at least a year.'; e.classList.add('show'); }
-        return;
-      }
-      // already committed on change
-    } else if (entry.kind === 'field' && entry.ui_hint === 'duration') {
-      const val = answers[currentRef] || {};
-      if (entry.required && !val.years && !val.months) {
-        const e = document.getElementById('err');
-        if (e) { e.textContent = 'Please enter a duration.'; e.classList.add('show'); }
-        return;
-      }
-    } else if (entry.kind === 'field' && (entry.ui_hint === 'height' || entry.ui_hint === 'weight')) {
-      const val = answers[currentRef] || {};
-      if (entry.required) {
-        const empty = entry.ui_hint === 'height'
-          ? (val.unit === 'metric' ? !val.cm : (!val.feet && !val.inches))
-          : (val.unit === 'metric' ? !val.kg : (!val.stone && !val.pounds));
-        if (empty) {
-          const e = document.getElementById('err');
-          if (e) { e.textContent = 'Please enter a value.'; e.classList.add('show'); }
-          return;
-        }
-      }
-      // already committed in save() callback
     }
     saveState();
     const target = resolveJump(entry);
@@ -981,7 +969,12 @@
     const vars = cond.vars || [];
 
     if (op === 'and' || op === 'or') {
-      const subs = vars.map(v => v.type === 'op' ? evalCondition(v.value) : false);
+      const subs = vars.map(v => {
+        // Sub-condition can be either {type:'op', value:{op,vars}} or {op, vars} directly
+        if (v.type === 'op') return evalCondition(v.value);
+        if (v.op) return evalCondition(v);
+        return false;
+      });
       return op === 'and' ? subs.every(Boolean) : subs.some(Boolean);
     }
 
@@ -1127,7 +1120,7 @@
 
     return `
       <div class="subfield-row">
-        <label class="sub-label" for="${inputId}">${formatTitle(sf.title)}${sf.required ? '<span class="q-required">*</span>' : ''}</label>
+        <label class="sub-label" for="${inputId}">${formatTitle(sf.title)}${sf.required ? '' : ''}</label>
         ${inputHtml}
       </div>`;
   }
@@ -1196,11 +1189,10 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field occ-search-wrap">
           <input class="input" id="occInput" type="text" autocomplete="off" placeholder="Type to search…" value="${escapeAttr(storedLabel)}" />
-          <div class="occ-dropdown" id="occDropdown" style="display:none"></div>
           <input type="hidden" id="occValue" value="${escapeAttr(stored)}" />
         </div>
         <div class="error-msg" id="err"></div>
@@ -1210,7 +1202,19 @@
     pendingValue = stored || null;
 
     const inp = document.getElementById('occInput');
-    const drop = document.getElementById('occDropdown');
+    // Move dropdown to document.body so position:fixed is always viewport-relative.
+    // Any CSS transform on an ancestor would otherwise break fixed positioning.
+    let drop = document.getElementById('occDropdownGlobal');
+    if (!drop) {
+      drop = document.createElement('div');
+      drop.id = 'occDropdownGlobal';
+      drop.className = 'occ-dropdown';
+      drop.style.display = 'none';
+      document.body.appendChild(drop);
+    } else {
+      drop.innerHTML = '';
+      drop.style.display = 'none';
+    }
     const hidden = document.getElementById('occValue');
     let focusedIdx = -1;
     const choices = entry.choices || [];
@@ -1610,7 +1614,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field duration-grid">
           <div class="duration-row">
@@ -1657,7 +1661,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field my-grid">
           <div class="my-col">
@@ -1715,7 +1719,7 @@
       stage().innerHTML = `
         <div class="card">
           ${eyebrow(entry, entry.section_category || 'Health')}
-          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
           <div class="unit-toggle">
             <button id="ut_imp" class="${u==='imperial'?'active':''}">Imperial</button>
             <button id="ut_met" class="${u==='metric'?'active':''}">Metric</button>
@@ -1764,7 +1768,7 @@
       stage().innerHTML = `
         <div class="card">
           ${eyebrow(entry, entry.section_category || 'Health')}
-          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
           <div class="unit-toggle">
             <button id="ut_imp" class="${u==='imperial'?'active':''}">Imperial</button>
             <button id="ut_met" class="${u==='metric'?'active':''}">Metric</button>
@@ -1797,7 +1801,7 @@
       stage().innerHTML = `
         <div class="card">
           ${eyebrow(entry, entry.section_category || 'Personal & Occupation')}
-          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+          <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
           <div class="field address-grid">
             <div class="address-row">
               <label for="addr_pc">Postcode</label>
@@ -1944,7 +1948,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '<span class="q-required">*</span>' : ''}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${entry.required ? '' : ''}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="field">${inputHtml}</div>
         <div class="error-msg" id="err"></div>

@@ -41339,7 +41339,7 @@
         {
           "id": "dWXlph88fSH0",
           "ref": "9505c464-6a4a-4b55-ac89-9854abd52045",
-          "label": "No"
+          "label": "None of the above"
         }
       ],
       "properties": {
@@ -41417,7 +41417,7 @@
         {
           "id": "Wy6S3rSq6SGR",
           "ref": "a2c8b3bb-4619-4c3e-8857-c67fe3e66503",
-          "label": "No"
+          "label": "None of the above"
         }
       ],
       "properties": {
@@ -41593,11 +41593,6 @@
           "id": "kcZttsIB5Ia6",
           "ref": "3ecbbbc3-bca2-481e-9080-e079945e179e",
           "label": "Any other hereditary disorder"
-        },
-        {
-          "id": "00pH7XXjc6S2",
-          "ref": "14480522-cb24-41df-87f9-4f3f462f44ec",
-          "label": "More than one of the above"
         },
         {
           "id": "4FwS0Wqvv2D7",
@@ -65990,6 +65985,54 @@
     {
       "source_ref": "dd88f542-8324-4d3d-abba-1b509ae30f60",
       "actions": [
+        {
+          "action": "jump",
+          "target_ref": "9d7de7e0-1c39-455a-bacc-866381043bd0",
+          "condition": {
+            "op": "or",
+            "vars": [
+              {
+                "op": "is",
+                "vars": [
+                  {
+                    "type": "field",
+                    "value": "dd88f542-8324-4d3d-abba-1b509ae30f60"
+                  },
+                  {
+                    "type": "choice",
+                    "value": "9534272c-347c-46f1-a204-d35439367d1a"
+                  }
+                ]
+              },
+              {
+                "op": "is",
+                "vars": [
+                  {
+                    "type": "field",
+                    "value": "dd88f542-8324-4d3d-abba-1b509ae30f60"
+                  },
+                  {
+                    "type": "choice",
+                    "value": "6c7f53ec-59a5-402d-86f8-8138ab281da3"
+                  }
+                ]
+              },
+              {
+                "op": "is",
+                "vars": [
+                  {
+                    "type": "field",
+                    "value": "dd88f542-8324-4d3d-abba-1b509ae30f60"
+                  },
+                  {
+                    "type": "choice",
+                    "value": "533c701b-3186-49df-bfb8-a2321f503164"
+                  }
+                ]
+              }
+            ]
+          }
+        },
         {
           "action": "jump",
           "target_ref": "4cb43ac1-1c5e-42c5-a14e-bcd218172457",
