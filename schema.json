@@ -11046,7 +11046,8 @@
       "part": 1,
       "parent_section_ref": "147b76ed-5084-4430-87ec-c80a43e37f14",
       "section_category": "Finances",
-      "custom_type": "sick_pay"
+      "custom_type": "sick_pay",
+      "why_we_ask": "Your income details help your adviser recommend the right level of income protection cover should you be unable to work."
     },
     {
       "kind": "field",
@@ -17920,7 +17921,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -17968,7 +17970,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -17988,7 +17991,8 @@
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
       "title_prefix": "Weight Loss Medication",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -18006,7 +18010,8 @@
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
       "ui_hint": "weight",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -18023,7 +18028,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -18043,7 +18049,8 @@
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
       "title_prefix": "Weight Loss Medication",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -18081,7 +18088,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -18100,7 +18108,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -18118,7 +18127,8 @@
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
       "ui_hint": "weight",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "field",
@@ -18151,7 +18161,8 @@
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
       "section_category": "Lifestyle",
-      "title_prefix": "Weight Loss Medication"
+      "title_prefix": "Weight Loss Medication",
+      "why_we_ask": "Insurers ask about weight and medication history to assess overall health risk and find the most appropriate cover for you."
     },
     {
       "kind": "page",
@@ -19609,7 +19620,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19662,7 +19674,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19680,7 +19693,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Bipolar Disorder/Manic Depression",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19698,7 +19712,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Bipolar Disorder/Manic Depression",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19716,7 +19731,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Bipolar Disorder/Manic Depression",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19733,7 +19749,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19786,7 +19803,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19834,7 +19852,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Bipolar Disorder/Manic Depression"
+      "title_prefix": "Bipolar Disorder/Manic Depression",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19851,7 +19870,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19904,7 +19924,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19922,7 +19943,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Schizophrenia",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19940,7 +19962,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Schizophrenia",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19958,7 +19981,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Schizophrenia",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -19975,7 +19999,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20028,7 +20053,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20076,7 +20102,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Schizophrenia"
+      "title_prefix": "Schizophrenia",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20093,7 +20120,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20146,7 +20174,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20164,7 +20193,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Psychosis",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20182,7 +20212,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Psychosis",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20200,7 +20231,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Psychosis",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20217,7 +20249,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20270,7 +20303,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20318,7 +20352,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Psychosis"
+      "title_prefix": "Psychosis",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20335,7 +20370,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20388,7 +20424,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20406,7 +20443,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Personality Disorder",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20424,7 +20462,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Personality Disorder",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20442,7 +20481,8 @@
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
       "title_prefix": "Personality Disorder",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20459,7 +20499,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20512,7 +20553,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20560,7 +20602,8 @@
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
       "section_category": "Health",
-      "title_prefix": "Personality Disorder"
+      "title_prefix": "Personality Disorder",
+      "why_we_ask": "Mental health history helps insurers find the right policy for you. This information is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "field",
@@ -20739,7 +20782,8 @@
       },
       "part": 3,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "why_we_ask": "Mental health history helps insurers tailor your policy. This is kept strictly confidential between you and your adviser."
     },
     {
       "kind": "section",
@@ -25452,7 +25496,8 @@
       },
       "part": 4,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "why_we_ask": "Insurers need to know this to assess risk and find a policy that provides you with the right cover. Your adviser will guide you through any implications."
     },
     {
       "kind": "section",
@@ -26385,7 +26430,8 @@
       "parent_section_ref": null,
       "section_category": "Health",
       "title_prefix": "HIV",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",
@@ -26402,7 +26448,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",
@@ -26420,7 +26467,8 @@
       "parent_section_ref": null,
       "section_category": "Health",
       "title_prefix": "HIV",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",
@@ -26437,7 +26485,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",
@@ -26454,7 +26503,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",
@@ -26471,7 +26521,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",
@@ -26514,7 +26565,8 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
-      "title_prefix": "HIV"
+      "title_prefix": "HIV",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",
@@ -26532,7 +26584,8 @@
       "parent_section_ref": null,
       "section_category": "Health",
       "title_prefix": "HIV",
-      "ui_hint": "monthyear"
+      "ui_hint": "monthyear",
+      "why_we_ask": "Insurers need this to assess your application. Your adviser will discuss any implications with you in complete confidence."
     },
     {
       "kind": "field",

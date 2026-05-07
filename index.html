@@ -327,6 +327,17 @@
   }
   .progress-segment.done .progress-segment-label { color: var(--accent-ink); }
   .progress-segment.active .progress-segment-label { color: var(--ink-soft); }
+  .progress-segment-tick {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; border-radius: 99px;
+    background: var(--accent); flex-shrink: 0; margin-left: 4px;
+    vertical-align: middle; position: relative; top: -1px;
+    opacity: 0; transform: scale(0.5);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .progress-segment.done .progress-segment-tick {
+    opacity: 1; transform: scale(1);
+  }
 
   /* ========== Custom field types ========== */
   /* Duration input (years + months stacked) */
@@ -602,6 +613,16 @@
     z-index: 200; white-space: nowrap;
     animation: toastIn .25s ease, toastOut .25s ease 2.5s forwards;
   }
+  /* Subtle "saved" toast — bottom-right, smaller */
+  .toast-saved {
+    position: fixed; bottom: 20px; right: 16px;
+    background: var(--accent-soft); color: var(--accent-ink);
+    border: 1px solid #cfdcd2; border-radius: 99px;
+    padding: 6px 12px; font-size: 12px; font-weight: 500;
+    z-index: 200; white-space: nowrap; display: flex; align-items: center; gap: 5px;
+    animation: toastIn .2s ease, toastOut .2s ease 1.8s forwards;
+    pointer-events: none;
+  }
   @keyframes toastIn  { from { opacity:0; transform:translateX(-50%) translateY(8px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
   @keyframes toastOut { from { opacity:1; } to { opacity:0; } }
   .card, .card *, .stage, .stage * {
@@ -612,6 +633,27 @@
   .spinner, .center, .center * {
     text-align: center;
   }
+
+  /* "Why do we ask this?" tooltip */
+  .why-wrap { position: relative; display: inline-block; }
+  .why-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 99px;
+    background: var(--line-strong); color: var(--ink-soft);
+    font-size: 11px; font-weight: 700; cursor: pointer; border: none; padding: 0;
+    vertical-align: middle; margin-left: 6px; position: relative; top: -1px;
+    transition: background .15s, color .15s; flex-shrink: 0;
+  }
+  .why-btn:hover, .why-btn.open { background: var(--accent-soft); color: var(--accent-ink); }
+  .why-popover {
+    position: absolute; z-index: 30; left: 0; top: calc(100% + 8px);
+    background: var(--bg-card); border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+    padding: 12px 14px; font-size: 13px; color: var(--ink-soft);
+    line-height: 1.5; max-width: min(300px, 90vw); width: max-content;
+    display: none;
+  }
+  .why-popover.open { display: block; }
 
   /* End / loading */
   .center {
@@ -831,8 +873,12 @@
     currentRef = ref;
     pendingValue = (entry.kind === 'field') ? cloneValue(answers[ref]) : null;
     saveState();
+    showSavedToast();
     renderEntry(entry);
     setProgress(ref);
+    // Wire "why do we ask this?" button after render
+    const curEntry = orderById.get(ref);
+    if (curEntry) wireWhyBtn(curEntry);
     // Hide any lingering global dropdown (occupation search)
     const gd = document.getElementById('occDropdownGlobal');
     if (gd) gd.style.display = 'none';
@@ -1061,7 +1107,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, eyebrowLabel)}
-        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
         ${entry.description ? `<div class="info-card">${formatTitle(entry.description)}</div>` : ''}
         ${navActions(false, 'Continue')}
       </div>`;
@@ -1072,7 +1118,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         ${navActions(false, 'Continue')}
       </div>`;
@@ -1088,7 +1134,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
         ${entry.description ? `<p class="q-desc">${formatTitle(entry.description)}</p>` : ''}
         <div class="subfields">${subfieldHtml}</div>
         <div class="error-msg" id="err"></div>
@@ -1329,7 +1375,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
         <p class="q-desc">Select all that apply.</p>
         <div class="sick-options">${optHtml}</div>
         <div class="error-msg" id="err"></div>
@@ -1391,7 +1437,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
         <p class="q-desc">Enter the approximate percentage for each category. The total must add up to 100%.</p>
         <div class="work-type-grid">${rowsHtml}</div>
         <div class="pct-total" id="pctTotal"></div>
@@ -1580,7 +1626,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Health')}
-        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
         <p class="q-desc">Add everyone who relies on your income — children, a partner, or anyone else financially dependent on you.</p>
         <div class="dependents-list" id="depList"></div>
         ${!noDeps ? `<div style="margin-top:10px">
@@ -1849,7 +1895,7 @@
     stage().innerHTML = `
       <div class="card">
         ${eyebrow(entry, entry.section_category || 'Personal & Occupation')}
-        <h1 class="q-title">${formatTitle(entry.title)}</h1>
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
         <div class="field" style="max-width:320px">
           <select class="input" id="citizen_sel" autocomplete="country-name">
             <option value="">— Select country —</option>
@@ -1866,168 +1912,72 @@
     setTimeout(() => sel.focus(), 60);
   }
 
-  // ── Address with country selector + postcode lookup ──────────────────────
-  const COUNTRY_OPTIONS = [
-    { value: 'gb', label: 'United Kingdom' },
-    { value: 'je', label: 'Jersey' },
-    { value: 'gg', label: 'Guernsey' },
-    { value: 'im', label: 'Isle of Man' },
-    { value: 'other', label: 'Other' },
-  ];
-
+  // ── Address — simple structured fields ────────────────────────────────────
   function renderAddress(entry) {
     const stored = (typeof answers[entry.ref] === 'object' && answers[entry.ref]) ? answers[entry.ref] : {};
+    const countryOpts = ALL_COUNTRIES.map(c =>
+      `<option value="${escapeAttr(c)}" ${(stored.country || 'United Kingdom') === c ? 'selected' : ''}>${escapeHtml(c)}</option>`
+    ).join('');
 
-    function mount() {
-      const countryOpts = COUNTRY_OPTIONS.map(o =>
-        `<option value="${o.value}" ${(stored.country||'gb') === o.value ? 'selected' : ''}>${o.label}</option>`
-      ).join('');
-
-      stage().innerHTML = `
-        <div class="card">
-          ${eyebrow(entry, entry.section_category || 'Personal & Occupation')}
-          <h1 class="q-title">${formatTitle(entry.title)}</h1>
-          <div class="field address-grid">
-            <div class="address-row">
-              <label for="addr_country">Country</label>
-              <select class="input" id="addr_country" style="max-width:280px">${countryOpts}</select>
-            </div>
-            <div class="address-row">
-              <label for="addr_pc">Postcode</label>
-              <div class="postcode-row">
-                <input class="input" id="addr_pc" type="text" inputmode="text" autocomplete="postal-code"
-                  placeholder="e.g. GL6 8PE" value="${escapeAttr(stored.postcode||'')}">
-                <button class="postcode-lookup-btn" id="pcLookupBtn" type="button">Find address</button>
-              </div>
-              <div class="postcode-hint" id="pcHint"></div>
-            </div>
-            <div id="addrDropWrap" style="display:none">
-              <div class="address-row">
-                <label for="addr_select">Select your address</label>
-                <select class="input" id="addr_select">
-                  <option value="">— Select address —</option>
-                </select>
-              </div>
-            </div>
-            <div class="address-row">
-              <label for="addr_l1">Address line 1</label>
-              <input class="input" id="addr_l1" type="text" autocomplete="address-line1"
-                placeholder="House number and street" value="${escapeAttr(stored.line1||'')}">
-            </div>
-            <div class="address-row">
-              <label for="addr_l2">Address line 2 <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
-              <input class="input" id="addr_l2" type="text" autocomplete="address-line2"
-                value="${escapeAttr(stored.line2||'')}">
-            </div>
-            <div class="address-row">
-              <label for="addr_town">Town / City</label>
-              <input class="input" id="addr_town" type="text" autocomplete="address-level2"
-                value="${escapeAttr(stored.town||'')}">
-            </div>
-            <div class="address-row">
-              <label for="addr_county">County <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
-              <input class="input" id="addr_county" type="text" autocomplete="address-level1"
-                value="${escapeAttr(stored.county||'')}">
-            </div>
+    stage().innerHTML = `
+      <div class="card">
+        ${eyebrow(entry, entry.section_category || 'Personal & Occupation')}
+        <h1 class="q-title">${formatTitle(entry.title)}${whyBtn(entry)}</h1>
+        <div class="field address-grid">
+          <div class="address-row">
+            <label for="addr_l1">Address line 1</label>
+            <input class="input" id="addr_l1" type="text" autocomplete="address-line1"
+              placeholder="House number and street" value="${escapeAttr(stored.line1||'')}">
           </div>
-          <div class="error-msg" id="err"></div>
-          ${navActions(true, 'Continue')}
-        </div>`;
+          <div class="address-row">
+            <label for="addr_l2">Address line 2 <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
+            <input class="input" id="addr_l2" type="text" autocomplete="address-line2"
+              value="${escapeAttr(stored.line2||'')}">
+          </div>
+          <div class="address-row">
+            <label for="addr_town">Town / City</label>
+            <input class="input" id="addr_town" type="text" autocomplete="address-level2"
+              value="${escapeAttr(stored.town||'')}">
+          </div>
+          <div class="address-row">
+            <label for="addr_county">County <span style="font-weight:400;color:var(--ink-mute)">(optional)</span></label>
+            <input class="input" id="addr_county" type="text" autocomplete="address-level1"
+              value="${escapeAttr(stored.county||'')}">
+          </div>
+          <div class="address-row">
+            <label for="addr_pc">Postcode</label>
+            <input class="input" id="addr_pc" type="text" autocomplete="postal-code"
+              style="max-width:160px;text-transform:uppercase;letter-spacing:0.05em"
+              value="${escapeAttr(stored.postcode||'')}">
+          </div>
+          <div class="address-row">
+            <label for="addr_country">Country</label>
+            <select class="input" id="addr_country" autocomplete="country-name" style="max-width:320px">
+              <option value="">— Select country —</option>
+              ${countryOpts}
+            </select>
+          </div>
+        </div>
+        <div class="error-msg" id="err"></div>
+        ${navActions(true, 'Continue')}
+      </div>`;
 
-      wireNav();
+    wireNav();
 
-      function save() {
-        answers[entry.ref] = {
-          country:  document.getElementById('addr_country')?.value || 'gb',
-          postcode: document.getElementById('addr_pc')?.value.trim().toUpperCase() || '',
-          line1:    document.getElementById('addr_l1')?.value.trim() || '',
-          line2:    document.getElementById('addr_l2')?.value.trim() || '',
-          town:     document.getElementById('addr_town')?.value.trim() || '',
-          county:   document.getElementById('addr_county')?.value.trim() || '',
-        };
-      }
-
-      stage().querySelectorAll('input, select').forEach(i => i.addEventListener('input', save));
-      save();
-
-      const pcInput    = document.getElementById('addr_pc');
-      const hint       = document.getElementById('pcHint');
-      const btn        = document.getElementById('pcLookupBtn');
-      const dropWrap   = document.getElementById('addrDropWrap');
-      const addrSelect = document.getElementById('addr_select');
-
-      async function lookup() {
-        const pc = pcInput.value.trim().replace(/\s+/g, '').toUpperCase();
-        const country = document.getElementById('addr_country')?.value || 'gb';
-        if (!pc) { hint.style.color = 'var(--warn)'; hint.textContent = 'Please enter a postcode first.'; return; }
-
-        btn.disabled = true; btn.textContent = 'Looking up…';
-        hint.textContent = ''; dropWrap.style.display = 'none';
-
-        try {
-          // Nominatim is free, covers UK and Channel Islands (je, gg, im)
-          const cc = country === 'other' ? '' : `&countrycodes=${country}`;
-          const url = `https://nominatim.openstreetmap.org/search?format=json&postalcode=${encodeURIComponent(pc)}${cc}&addressdetails=1&limit=20`;
-          const r = await fetch(url, { headers: { 'Accept-Language': 'en-GB', 'User-Agent': 'BHH-FactFind/1.0' } });
-          const results = await r.json();
-
-          if (!results || !results.length) throw new Error('not found');
-
-          // Build deduplicated address list from results
-          const seen = new Set();
-          const options = results.map(res => {
-            const a = res.address || {};
-            const road   = a.road || a.pedestrian || a.footway || '';
-            const house  = a.house_number || '';
-            const line1  = [house, road].filter(Boolean).join(' ');
-            const town   = a.town || a.city || a.village || a.hamlet || a.suburb || '';
-            const county = a.county || a.state_district || a.region || '';
-            const label  = [line1, town, county, pc].filter(Boolean).join(', ');
-            return { line1, town, county, label };
-          }).filter(o => {
-            if (seen.has(o.label)) return false;
-            seen.add(o.label); return true;
-          });
-
-          addrSelect.innerHTML =
-            '<option value="">— Select your address —</option>' +
-            options.map((o, i) => `<option value="${i}">${escapeHtml(o.label)}</option>`).join('') +
-            "<option value=\"manual\">Enter my address manually</option>";
-          dropWrap.style.display = 'block';
-
-          addrSelect.onchange = function() {
-            if (this.value === '' || this.value === 'manual') {
-              document.getElementById('addr_l1').focus();
-              return;
-            }
-            const o = options[Number(this.value)];
-            if (!o) return;
-            document.getElementById('addr_l1').value    = o.line1;
-            document.getElementById('addr_l2').value    = '';
-            document.getElementById('addr_town').value  = o.town;
-            document.getElementById('addr_county').value = o.county;
-            document.getElementById('addr_pc').value    = pc;
-            save();
-          };
-
-          hint.style.color = 'var(--accent-ink)';
-          hint.textContent = `${options.length} result${options.length !== 1 ? 's' : ''} found — select yours or enter manually below.`;
-
-        } catch (_) {
-          hint.style.color = 'var(--warn)';
-          hint.textContent = 'Postcode not found. Please fill in your address manually.';
-          document.getElementById('addr_l1').focus();
-        } finally {
-          btn.disabled = false; btn.textContent = 'Find address';
-        }
-      }
-
-      btn.addEventListener('click', lookup);
-      pcInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); lookup(); } });
-      setTimeout(() => pcInput.focus({ preventScroll: false }), 60);
+    function save() {
+      answers[entry.ref] = {
+        line1:    document.getElementById('addr_l1')?.value.trim() || '',
+        line2:    document.getElementById('addr_l2')?.value.trim() || '',
+        postcode: document.getElementById('addr_pc')?.value.trim().toUpperCase() || '',
+        town:     document.getElementById('addr_town')?.value.trim() || '',
+        county:   document.getElementById('addr_county')?.value.trim() || '',
+        country:  document.getElementById('addr_country')?.value || '',
+      };
     }
 
-    mount();
+    stage().querySelectorAll('input, select').forEach(i => i.addEventListener('input', save));
+    save();
+    setTimeout(() => document.getElementById('addr_l1')?.focus({ preventScroll: false }), 60);
   }
 
   function renderField(entry) {
@@ -2421,8 +2371,7 @@
 
     // Address
     if (ui_hint === 'address' && a && typeof a === 'object') {
-      const countryLabel = COUNTRY_OPTIONS?.find(o => o.value === a.country)?.label || a.country || '';
-      const parts = [a.line1, a.line2, a.town, a.county, a.postcode, countryLabel !== 'United Kingdom' ? countryLabel : ''].filter(Boolean);
+      const parts = [a.line1, a.line2, a.postcode, a.town, a.county, a.country].filter(Boolean);
       return `<span class="review-a">${escapeHtml(parts.join(', ') || '—')}</span>`;
     }
 
@@ -2508,10 +2457,8 @@
       if (a && typeof a === 'object' && a.unit === 'imperial' && 'feet' in a) return `${a.feet}ft ${a.inches}in`;
       if (a && typeof a === 'object' && a.unit === 'metric' && 'kg' in a) return `${a.kg} kg`;
       if (a && typeof a === 'object' && a.unit === 'imperial' && 'stone' in a) return `${a.stone} st ${a.pounds} lb`;
-      if (a && typeof a === 'object' && ('line1' in a || 'postcode' in a)) {
-        const countryLabel = (COUNTRY_OPTIONS || []).find(o => o.value === a.country)?.label || '';
-        const countryStr = countryLabel && countryLabel !== 'United Kingdom' ? countryLabel : '';
-        return [a.line1, a.line2, a.town, a.county, a.postcode, countryStr].filter(Boolean).join(', ') || '—';
+      if (a && typeof a === 'object' && ('line1' in a || 'town' in a)) {
+        return [a.line1, a.line2, a.postcode, a.town, a.county, a.country].filter(Boolean).join(', ') || '—';
       }
       if (Array.isArray(a)) return a.map(x => (schema.choice_index[x] && schema.choice_index[x].label) || x).join(', ');
       if (typeof a === 'string' && schema.choice_index[a]) return schema.choice_index[a].label;
@@ -2726,6 +2673,17 @@
     setTimeout(() => t.remove(), 3000);
   }
 
+  let _savedToastTimer = null;
+  function showSavedToast() {
+    // Debounce — don't stack toasts if answers come quickly
+    if (_savedToastTimer) return;
+    const t = document.createElement('div');
+    t.className = 'toast-saved';
+    t.innerHTML = `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Progress saved`;
+    document.body.appendChild(t);
+    _savedToastTimer = setTimeout(() => { t.remove(); _savedToastTimer = null; }, 2200);
+  }
+
   function tryResumeFromUrl() {
     const hash = location.hash;
     if (!hash.startsWith('#resume=')) return false;
@@ -2769,7 +2727,29 @@
     return `<span class="eyebrow"><span class="dot"></span>${prefix}${escapeHtml(label)}</span>`;
   }
 
-  function setProgress(currentRef) {
+  function whyBtn(entry) {
+    if (!entry.why_we_ask) return '';
+    return ` <span class="why-wrap"><button class="why-btn" aria-label="Why do we ask this?" type="button">i</button><div class="why-popover"><strong style="display:block;margin-bottom:4px;color:var(--ink)">Why do we ask this?</strong>${escapeHtml(entry.why_we_ask)}</div></span>`;
+  }
+
+  function wireWhyBtn(entry) {
+    if (!entry.why_we_ask) return;
+    const btn = stage().querySelector('.why-btn');
+    if (!btn) return;
+    const pop = stage().querySelector('.why-popover');
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = pop.classList.toggle('open');
+      btn.classList.toggle('open', open);
+    });
+    document.addEventListener('click', function close(e) {
+      if (!btn.contains(e.target)) {
+        pop.classList.remove('open');
+        btn.classList.remove('open');
+        document.removeEventListener('click', close);
+      }
+    });
+  }
     const segs = getProgressSections();
     const container = document.getElementById('progressSections');
     if (!container) return;
@@ -2802,7 +2782,7 @@
       const clickable = !isFuture && s.refs.length > 0;
       return `<div class="progress-segment ${isDone ? 'done' : isActive ? 'active' : ''} ${isFuture ? 'future' : ''}"
         ${clickable ? `data-cat="${s.label}" role="button" tabindex="0" title="Jump to ${s.label}"` : ''}>
-        <div class="progress-segment-label">${s.label}</div>
+        <div class="progress-segment-label">${s.label}<span class="progress-segment-tick"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
         <div class="progress-segment-bar"><div class="progress-segment-fill" style="width:${pct}%"></div></div>
       </div>`;
     }).join('');
