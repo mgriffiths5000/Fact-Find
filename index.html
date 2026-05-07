@@ -2751,6 +2751,8 @@
       }
     });
   }
+
+  function setProgress(currentRef) {
     const segs = getProgressSections();
     const container = document.getElementById('progressSections');
     if (!container) return;
@@ -2781,11 +2783,9 @@
       const isFuture = !isDone && !isActive && seen === 0;
       // Only clickable if the section has been started or completed
       const clickable = !isFuture && s.refs.length > 0;
-      return `<div class="progress-segment ${isDone ? 'done' : isActive ? 'active' : ''} ${isFuture ? 'future' : ''}"
-        ${clickable ? `data-cat="${s.label}" role="button" tabindex="0" title="Jump to ${s.label}"` : ''}>
-        <div class="progress-segment-label">${s.label}<span class="progress-segment-tick"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        <div class="progress-segment-bar"><div class="progress-segment-fill" style="width:${pct}%"></div></div>
-      </div>`;
+      const catAttrs = clickable ? `data-cat="${s.label}" role="button" tabindex="0" title="Jump to ${s.label}"` : '';
+      const tick = '<span class="progress-segment-tick"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+      return `<div class="progress-segment ${isDone ? 'done' : isActive ? 'active' : ''} ${isFuture ? 'future' : ''}" ${catAttrs}><div class="progress-segment-label">${s.label}${tick}</div><div class="progress-segment-bar"><div class="progress-segment-fill" style="width:${pct}%"></div></div></div>`;
     }).join('');
 
     // Wire click handlers
