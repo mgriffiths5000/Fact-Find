@@ -1314,10 +1314,11 @@
       inp.value = choices.find(c => c.ref === ref)?.label || label;
       hidden.value = ref;
       pendingValue = ref;
+      answers[entry.ref] = ref;   // write immediately so validation can read it
       drop.style.display = 'none';
     }
 
-    inp.addEventListener('input', () => { render(inp.value); hidden.value = ''; pendingValue = null; });
+    inp.addEventListener('input', () => { render(inp.value); hidden.value = ''; pendingValue = null; answers[entry.ref] = null; });
     inp.addEventListener('keydown', e => {
       const opts = [...drop.querySelectorAll('.occ-option')];
       if (e.key === 'ArrowDown') { e.preventDefault(); focusedIdx = Math.min(focusedIdx+1, opts.length-1); opts.forEach((o,i) => o.classList.toggle('focused', i===focusedIdx)); if (opts[focusedIdx]) opts[focusedIdx].scrollIntoView({block:'nearest'}); }
