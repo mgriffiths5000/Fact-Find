@@ -12809,7 +12809,7 @@
           "id": "PSA4hvTvwKrE",
           "title": "What is you annual earned pre-tax income? (For self-employed this can be last year's pre-tax income).",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12819,7 +12819,7 @@
           "id": "dnhvqfPx6E5g",
           "title": "What is your net monthly take-home pay?",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12842,7 +12842,7 @@
           "id": "QDg4zZpQvPL0",
           "title": "Council Tax",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12852,7 +12852,7 @@
           "id": "C4FK231czbAi",
           "title": "Gas, Electricity & Water",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12862,7 +12862,7 @@
           "id": "5AQTFCc8EA8O",
           "title": "Mortgage/Rent",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12872,7 +12872,7 @@
           "id": "llnuifz52EF5",
           "title": "Food and other household shopping costs",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12882,7 +12882,7 @@
           "id": "A1jBpBau936Y",
           "title": "Insurance premiums (medical, car, pet etc.)",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12892,7 +12892,7 @@
           "id": "3zLi2s1CCnUp",
           "title": "Childcare/Child Maintenance",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12902,7 +12902,7 @@
           "id": "GryqxMElhSAZ",
           "title": "Clothing",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12912,7 +12912,7 @@
           "id": "vuogZ8ZJBdu1",
           "title": "Regular subscriptions (TV, Phone, Broadband, Netflix etc.)",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12922,7 +12922,7 @@
           "id": "WwUXTKFVysWb",
           "title": "Car and other transport",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12932,7 +12932,7 @@
           "id": "1Zkc9wk8fqy0",
           "title": "Education",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12942,7 +12942,7 @@
           "id": "2rChMtPnmxe3",
           "title": "Social Life",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -12952,7 +12952,7 @@
           "id": "Wb55xwFHacRj",
           "title": "Holidays",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -13412,7 +13412,8 @@
       },
       "part": 2,
       "parent_section_ref": "ddc7f72b-9e14-4d68-b5dc-d576e2bf6ba4",
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -18179,7 +18180,7 @@
           "id": "ouygzGNFKGS6",
           "title": "Beer/Cider/Lager",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -18189,7 +18190,7 @@
           "id": "hh7KyPh4Nq4F",
           "title": "Strong Beer/Cider/Lager",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -18199,7 +18200,7 @@
           "id": "aLxgBt2kAM8J",
           "title": "Wine",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -18209,7 +18210,7 @@
           "id": "B1vOXZuHRPwb",
           "title": "Spirits",
           "description": "",
-          "type": "short_text",
+          "type": "number",
           "subfield_key": null,
           "required": true,
           "properties": {}
@@ -18546,7 +18547,8 @@
       },
       "part": 2,
       "parent_section_ref": null,
-      "section_category": "Lifestyle"
+      "section_category": "Lifestyle",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -19474,7 +19476,8 @@
       },
       "part": 3,
       "parent_section_ref": "c1e5525f-37de-4702-815b-eeabdfc3f494",
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -20783,6 +20786,7 @@
       "part": 3,
       "parent_section_ref": null,
       "section_category": "Health",
+      "is_condition_picker": true,
       "why_we_ask": "Mental health history helps insurers tailor your policy. This is kept strictly confidential between you and your adviser."
     },
     {
@@ -21337,7 +21341,8 @@
       },
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -24427,7 +24432,8 @@
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
       "section_category": "Health",
-      "title_prefix": "Stroke"
+      "title_prefix": "Stroke",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -24792,7 +24798,8 @@
       "part": 4,
       "parent_section_ref": "6dc25452-325a-40ff-829d-f4a8295f7181",
       "section_category": "Health",
-      "title_prefix": "Brain Haemorrhage"
+      "title_prefix": "Brain Haemorrhage",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -25497,6 +25504,7 @@
       "part": 4,
       "parent_section_ref": null,
       "section_category": "Health",
+      "is_condition_picker": true,
       "why_we_ask": "Insurers need to know this to assess risk and find a policy that provides you with the right cover. Your adviser will guide you through any implications."
     },
     {
@@ -25574,7 +25582,8 @@
       },
       "part": 4,
       "parent_section_ref": "8e16fb3d-3fae-467a-94f5-6724130bb710",
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -26925,7 +26934,8 @@
       },
       "part": 4,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -27050,7 +27060,8 @@
       },
       "part": 5,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "section",
@@ -28856,7 +28867,8 @@
       },
       "part": 5,
       "parent_section_ref": "94d0f9ff-8874-47f9-8f87-9178a28a7a21",
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -31036,7 +31048,8 @@
       },
       "part": 5,
       "parent_section_ref": "6a9103cc-8361-4be5-a9d5-0b4cd3171490",
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -33247,7 +33260,8 @@
       },
       "part": 6,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "section",
@@ -33324,7 +33338,8 @@
       },
       "part": 6,
       "parent_section_ref": "3347558a-a493-4407-9729-ac028b52d8e0",
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -35739,7 +35754,8 @@
       },
       "part": 6,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "section",
@@ -36102,7 +36118,8 @@
       },
       "part": 6,
       "parent_section_ref": "e17a5b40-f5b9-46cd-ba1e-5a7ac31eeade",
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -36271,7 +36288,8 @@
       },
       "part": 7,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -41236,7 +41254,8 @@
       },
       "part": 7,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -41291,7 +41310,8 @@
       },
       "part": 7,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",
@@ -41482,7 +41502,8 @@
       },
       "part": 7,
       "parent_section_ref": null,
-      "section_category": "Health"
+      "section_category": "Health",
+      "is_condition_picker": true
     },
     {
       "kind": "field",

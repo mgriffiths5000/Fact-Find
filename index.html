@@ -741,12 +741,13 @@
   let currentRef = null;          // ref of currently rendered entry
   let pendingValue = null;        // staged value before commit
   let _condCtx = null;            // active condition context for eyebrow badge inheritance
+  let _editMode = false;          // true when navigated here from the review screen
 
   function maybeSetCondCtxFromAnswer(entry, value) {
-    // Only fire for condition-picker questions: Health/Lifestyle, no own prefix, choice answer.
-    const cat = entry.section_category || '';
-    if (entry.title_prefix) return;                         // already a sub-question
-    if (cat !== 'Health' && cat !== 'Lifestyle') return;   // only relevant sections
+    // Only fire for explicitly tagged condition-picker questions.
+    // These are questions where the choices are medical condition names
+    // or activity names, and selecting one opens a dedicated follow-up branch.
+    if (!entry.is_condition_picker) return;
     if (!value) return;
 
     const choices = entry.choices || [];
@@ -2051,10 +2052,14 @@
   }
 
   function navActions(showBack, ctaText) {
+    const returnBtn = _editMode
+      ? '<button class="btn ghost" id="returnSummaryBtn">Return to summary ↗</button>'
+      : '';
     return `
       <div class="actions">
         <button class="btn primary" id="nextBtn">${escapeHtml(ctaText)} <span aria-hidden="true">→</span></button>
         ${history.length > 0 ? '<button class="btn ghost" id="backBtn">← Back</button>' : ''}
+        ${returnBtn}
         <span class="kbd-hint">Press <kbd>Enter</kbd> to continue</span>
       </div>`;
   }
@@ -2064,6 +2069,13 @@
     if (nb) nb.addEventListener('click', next);
     const bb = document.getElementById('backBtn');
     if (bb) bb.addEventListener('click', back);
+    const rb = document.getElementById('returnSummaryBtn');
+    if (rb) rb.addEventListener('click', returnToSummary);
+  }
+
+  function returnToSummary() {
+    _editMode = false;
+    finish();
   }
 
   function wireFieldInputs(entry) {
@@ -2140,6 +2152,7 @@
 
   // -------------------- Finish / review --------------------
   function finish() {
+    _editMode = false;
     setProgress(null);
     const groups = buildReviewGroups();
     const sections = groups.map((g, gi) => `
@@ -2189,6 +2202,7 @@
         const gi = Number(btn.dataset.gi);
         const group = groups[gi];
         if (!group) return;
+        _editMode = true;
         // Find the first schema entry whose ref is in this group
         const rowRefs = new Set((group.rows || []).map(r => r.ref).filter(Boolean));
         // Also check page subfields
@@ -2797,6 +2811,7 @@
   }
 
   function jumpToCategory(cat) {
+    _editMode = currentRef === null; // if we were on the summary, enable edit mode
     // Navigate to the first entry in this category that appears in the schema order
     for (const e of schema.order) {
       if (e.section_category === cat && orderById.has(e.ref)) {
